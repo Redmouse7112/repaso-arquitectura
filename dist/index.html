@@ -267,6 +267,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
     <div class="sci" style="margin-top:7px">v3.0 · Agosto 2026 &nbsp;|&nbsp; <span style="color:#3a4455">Desarrollado por Javier "RED" Barrionuevo · <span class="ac">@redyz31</span></span></div>
   </div>
   <div class="cpy cpy-splash">© 2026 Javier "RED" Barrionuevo · Todos los derechos reservados. Esta herramienta es de uso personal y educativo. Queda prohibida su redistribución, modificación o comercialización sin autorización expresa del autor.</div>
+  <div class="cpy cpy-splash">⚠️ Esta herramienta es propiedad intelectual de Javier "RED" Barrionuevo. El código fuente, las preguntas y el diseño son de su autoría. Cualquier uso comercial, redistribución o apropiación del contenido sin autorización expresa será considerado una violación de los derechos del autor y podrá tener consecuencias legales.</div>
   <div class="stp">· Toca para continuar ·</div>
 </div>
 
@@ -1704,15 +1705,38 @@ const EQ = [
 ];
 
 // ── STATS ──
-var hist    = JSON.parse(localStorage.getItem('ah')||'[]');
+var HMAX    = 20;
+var histQ   = JSON.parse(localStorage.getItem('ahq')||'[]');
+var histE   = JSON.parse(localStorage.getItem('ahe')||'[]');
 var fails   = JSON.parse(localStorage.getItem('af')||'{}');
 var streak  = +localStorage.getItem('as')||0;
 var examCat = JSON.parse(localStorage.getItem('aec')||'{}');
 
+// migra el historial único anterior ('ah') a los dos arrays separados
+(function(){
+  var old=localStorage.getItem('ah');
+  if(old===null)return;
+  var t0=Date.now();
+  JSON.parse(old).forEach(function(s,i){
+    s.ts=t0-i;
+    (s.mode==='examen'?histE:histQ).push(s);
+  });
+  histQ=histQ.slice(0,HMAX);
+  histE=histE.slice(0,HMAX);
+  localStorage.setItem('ahq',JSON.stringify(histQ));
+  localStorage.setItem('ahe',JSON.stringify(histE));
+  localStorage.removeItem('ah');
+})();
+
+function allHist(){
+  return histQ.concat(histE).sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+}
 function saveSes(pct,ok,mid,no,tot,mode){
-  hist.unshift({pct:pct,ok:ok,mid:mid,no:no,tot:tot,mode:mode,date:new Date().toLocaleDateString('es-AR')});
-  if(hist.length>20)hist.pop();
-  localStorage.setItem('ah',JSON.stringify(hist));
+  var isEx=mode==='examen';
+  var arr=isEx?histE:histQ;
+  arr.unshift({pct:pct,ok:ok,mid:mid,no:no,tot:tot,mode:mode,ts:Date.now(),date:new Date().toLocaleDateString('es-AR')});
+  if(arr.length>HMAX)arr.pop();
+  localStorage.setItem(isEx?'ahe':'ahq',JSON.stringify(arr));
   streak=pct>=70?streak+1:0;
   localStorage.setItem('as',streak);
   localStorage.setItem('af',JSON.stringify(fails));
@@ -1740,7 +1764,7 @@ function renderCatProgress(){
 }
 function renderEvoChart(){
   var el=document.getElementById('st-evo');
-  var pts=hist.filter(function(s){return s.mode==='examen';}).reverse().map(function(s){return s.pct;});
+  var pts=histE.slice().reverse().map(function(s){return s.pct;});
   var n=pts.length;
   if(!n){el.innerHTML='<div class="emp"><div class="ei">📈</div><p>Rendí un examen primero</p></div>';return;}
   var W=320,H=176,L=34,R=14,T=16,B=32,iw=W-L-R,ih=H-T-B,P=16;
@@ -1767,6 +1791,7 @@ function renderEvoChart(){
 function renderStats(){
   renderCatProgress();
   renderEvoChart();
+  var hist=allHist();
   if(!hist.length)return;
   var avg=Math.round(hist.reduce(function(a,s){return a+s.pct;},0)/hist.length);
   document.getElementById('st-avg').textContent=avg+'%';
@@ -1794,8 +1819,8 @@ function renderStats(){
 }
 function clearAll(){
   if(!confirm('¿Borrar todo el historial?'))return;
-  hist=[];fails={};streak=0;examCat={};
-  localStorage.removeItem('ah');localStorage.removeItem('af');localStorage.removeItem('as');localStorage.removeItem('aec');
+  histQ=[];histE=[];fails={};streak=0;examCat={};
+  localStorage.removeItem('ahq');localStorage.removeItem('ahe');localStorage.removeItem('af');localStorage.removeItem('as');localStorage.removeItem('aec');
   document.getElementById('st-wk').innerHTML='<div class="emp"><div class="ei">🎯</div><p>Completá un quiz primero</p></div>';
   document.getElementById('st-cat').innerHTML='<div class="emp"><div class="ei">📈</div><p>Rendí un examen primero</p></div>';
   document.getElementById('st-evo').innerHTML='<div class="emp"><div class="ei">📈</div><p>Rendí un examen primero</p></div>';
