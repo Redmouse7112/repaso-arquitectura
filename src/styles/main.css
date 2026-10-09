@@ -217,6 +217,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 .sci{font-size:12px;color:#8892a4;margin-bottom:3px;line-height:1.5;}
 .sci strong{color:#a0aab8;}
 .sci .ac{color:#C9A84C;}
+.cpy-splash{position:relative;max-width:320px;margin-top:6px;animation:tin .8s .7s ease both;}
 .stp{position:absolute;bottom:calc(32px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:11px;color:#3a4455;font-weight:600;letter-spacing:.1em;text-transform:uppercase;animation:blk 2s ease-in-out infinite 1.5s both;white-space:nowrap;}
 @keyframes blk{0%,100%{opacity:.3}50%{opacity:1}}
 .scl{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);animation:scn 3s linear infinite;pointer-events:none;}
