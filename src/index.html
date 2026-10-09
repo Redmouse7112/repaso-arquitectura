@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<title>Arquitectura del Computador – RED</title>
+
+<!-- PWA -->
+<link rel="manifest" href="../public/manifest.json">
+<meta name="theme-color" content="#0f1117">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arquitectura RED">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="icon" href="../assets/icon-192.png">
+
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash" onclick="hideSplash()">
+  <div class="slw"><img src="../assets/logo.png" alt="Logo"></div>
+  <div class="stx">
+    <div class="sas">Herramienta de estudio desarrollada por</div>
+    <div class="snm">Javier "RED" Barrionuevo</div>
+    <div class="stt">Tecnicatura Superior en Desarrollo de Software</div>
+    <div class="sin">I.S.P.R.M.M. · Formosa, Argentina</div>
+  </div>
+  <div class="sdv"></div>
+  <div class="scr">
+    <div class="sct">Sobre esta herramienta</div>
+    <div class="sci"><strong>Repaso oral interactivo</strong><br>Arquitectura del Computador y Redes</div>
+    <div class="sci" style="margin-top:7px"><span class="ac">📚</span> Repaso · Quiz · Examen · Estadísticas</div>
+    <div class="sci" style="margin-top:7px">v3.0 · Agosto 2026 &nbsp;|&nbsp; <span style="color:#3a4455">Desarrollado por Javier "RED" Barrionuevo · <span class="ac">@redyz31</span></span></div>
+  </div>
+  <div class="cpy cpy-splash">© 2026 Javier "RED" Barrionuevo · Todos los derechos reservados. Esta herramienta es de uso personal y educativo. Queda prohibida su redistribución, modificación o comercialización sin autorización expresa del autor.</div>
+  <div class="stp">· Toca para continuar ·</div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nb on" onclick="go('repaso',this)"><span class="ni">📚</span>Repaso</div>
+  <div class="nb" onclick="go('quiz',this)"><span class="ni">🎯</span>Quiz</div>
+  <div class="nb" onclick="go('examen',this)"><span class="ni">📝</span>Examen</div>
+  <div class="nb" onclick="go('stats',this)"><span class="ni">📊</span>Stats</div>
+</nav>
+
+<!-- INSTALAR PWA (visible solo si el navegador la considera instalable) -->
+<div id="inst-wrap" class="ibw hide"><button class="ibtn" onclick="installApp()">📲 Instalar app</button></div>
+
+<!-- REPASO -->
+<div id="s-repaso" class="scr on">
+  <div class="ph"><div class="ey">Arquitectura del Computador</div><h1>Repaso Oral</h1><p>Tocá cada pregunta · marcá si la sabías</p></div>
+  <div class="sg">
+    <div class="si"><div class="sn" id="r-tot">0</div><div class="sl">Total</div></div>
+    <div class="si"><div class="sn" id="r-ok" style="color:var(--grn)">0</div><div class="sl">✓ Sabía</div></div>
+    <div class="si"><div class="sn" id="r-fl" style="color:var(--red)">0</div><div class="sl">✗ Repasar</div></div>
+  </div>
+  <div class="pb"><div class="pf" id="r-pb" style="width:0%"></div></div>
+  <div class="pl" id="r-pl">0 / 0 respondidas</div>
+  <button class="clr" style="margin:0 0 14px" onclick="resetR()">↺ Reiniciar progreso</button>
+  <div class="tabs" id="r-tabs"></div>
+  <div id="r-cards"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="s-quiz" class="scr">
+  <div id="qz-set">
+    <div class="ph"><div class="ey">Modo evaluación</div><h1>Quiz Oral</h1><p>Elegí modo y temas</p></div>
+    <div class="mg">
+      <div class="mc on" onclick="pickM('flash',this)"><div class="mi">⚡</div><div class="mn">Flash Cards</div><div class="md">Calificás vos mismo</div></div>
+      <div class="mc" onclick="pickM('oral',this)"><div class="mi">🎤</div><div class="mn">Simulación Oral</div><div class="md">Con cronómetro</div></div>
+      <div class="mc" onclick="pickM('weak',this)"><div class="mi">🔥</div><div class="mn">Solo difíciles</div><div class="md">Las que fallaste</div></div>
+      <div class="mc" onclick="pickM('rand',this)"><div class="mi">🎲</div><div class="mn">Aleatorio</div><div class="md">Orden sorpresa</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Temas</p>
+    <div class="pills" id="qz-pils"></div>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Tiempo por pregunta</p>
+    <div class="pills" id="qz-time">
+      <div class="pill on" onclick="pickT(30,this)">30 seg</div>
+      <div class="pill" onclick="pickT(60,this)">60 seg</div>
+      <div class="pill" onclick="pickT(90,this)">90 seg</div>
+      <div class="pill" onclick="pickT(0,this)">Sin límite</div>
+    </div>
+    <button class="gbtn" onclick="startQz()">🚀 Empezar</button>
+  </div>
+  <div id="qz-run" class="hide" style="padding-top:14px">
+    <div class="qhd">
+      <div class="qcnt" id="qz-c">1/1</div>
+      <div class="pb" style="flex:1"><div class="pf" id="qz-pb" style="width:0%"></div></div>
+      <div class="tmr hide" id="qz-tmr">0:30</div>
+    </div>
+    <div class="qqc"><div class="qcat" id="qz-cat"></div><div class="qq" id="qz-q"></div></div>
+    <button class="rvbtn" id="qz-rvb" onclick="revQ()">👁 Ver respuesta</button>
+    <div class="qans" id="qz-ans"></div>
+    <div class="sbts hide" id="qz-sb">
+      <button class="s-ok" onclick="scQ('ok')">✓ La sabía</button>
+      <button class="s-md" onclick="scQ('mid')">~ Más o menos</button>
+      <button class="s-no" onclick="scQ('no')">✗ No la sabía</button>
+    </div>
+    <button class="xbtn" onclick="exitQz()">Salir del quiz</button>
+  </div>
+  <div id="qz-res" class="hide" style="padding-top:18px;text-align:center">
+    <div class="ey" style="margin-bottom:12px">Resultado</div>
+    <div class="circ" id="qz-cir"><span id="qz-pct">0%</span></div>
+    <div style="font-size:26px;font-weight:700;color:#fff;margin-bottom:4px" id="qz-grd"></div>
+    <div style="color:var(--mut);font-size:14px;margin-bottom:20px" id="qz-sub"></div>
+    <div class="rb">
+      <div class="rbi"><div class="rbn" style="color:var(--grn)" id="qz-ok">0</div><div class="rbl">✓ Sabía</div></div>
+      <div class="rbi"><div class="rbn" style="color:var(--yel)" id="qz-md">0</div><div class="rbl">~ Más o menos</div></div>
+      <div class="rbi"><div class="rbn" style="color:var(--red)" id="qz-no">0</div><div class="rbl">✗ No sabía</div></div>
+    </div>
+    <div id="qz-wl"></div>
+    <button class="rbtn rbtn-p" onclick="retryQz()">🔄 Repetir</button>
+    <button class="rbtn rbtn-w hide" id="qz-rw" onclick="retryWk()" style="margin-top:8px">🔥 Solo las falladas</button>
+    <button class="xbtn" onclick="backQz()">← Volver</button>
+  </div>
+</div>
+
+<!-- EXAMEN -->
+<div id="s-examen" class="scr">
+  <div id="ex-set">
+    <div class="ph"><div class="ey">Evaluación objetiva</div><h1>Examen</h1><p>El sistema te evalúa — no podés mentirte</p></div>
+    <div class="eig">
+      <div class="eii"><div class="ein" id="ex-tot">0</div><div class="eil">Preguntas</div></div>
+      <div class="eii"><div class="ein">4</div><div class="eil">Opciones</div></div>
+      <div class="eii"><div class="ein">60%</div><div class="eil">Para aprobar</div></div>
+    </div>
+    <p style="color:var(--mut);font-size:13px;margin-bottom:14px;line-height:1.6">Elegís una opción. El sistema te muestra al instante si acertaste. Al final ves tu nota real.</p>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Temas</p>
+    <div class="pills" id="ex-pils"></div>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Cantidad</p>
+    <div class="pills" style="margin-bottom:16px">
+      <div class="pill" onclick="pickEQ(5,this)">5 rápido</div>
+      <div class="pill on" onclick="pickEQ(10,this)">10 normal</div>
+      <div class="pill" onclick="pickEQ(0,this)">Todas</div>
+    </div>
+    <button class="gbtn" onclick="startEx()">📝 Empezar examen</button>
+  </div>
+  <div class="eqw" id="ex-qw">
+    <div class="ehd">
+      <div class="qcnt" id="ex-num">1/10</div>
+      <div class="pb" style="flex:1"><div class="pf" id="ex-pb" style="width:0%"></div></div>
+      <div class="ecb" id="ex-cat">Tema</div>
+    </div>
+    <div id="ex-diff" class="diff diff-media">★★ Media</div>
+    <div class="eqc"><div class="eq" id="ex-q"></div></div>
+    <div class="opts" id="ex-opts"></div>
+    <div class="fb" id="ex-fb"><div class="fbt" id="ex-fbt"></div><div class="fbc" id="ex-fbc"></div></div>
+    <button class="enb" id="ex-nb" onclick="nextEx()">Siguiente →</button>
+  </div>
+  <div class="erw" id="ex-res">
+    <div class="ey" style="margin-bottom:12px">Resultado del examen</div>
+    <div class="esc" id="ex-cir"><span id="ex-pct">0%</span></div>
+    <div class="eg" id="ex-grd"></div>
+    <div class="es" id="ex-sub"></div>
+    <div class="eb">
+      <div class="ebi"><div class="ebn" style="color:var(--grn)" id="ex-ok">0</div><div class="ebl">✓ Correctas</div></div>
+      <div class="ebi"><div class="ebn" style="color:var(--red)" id="ex-wr">0</div><div class="ebl">✗ Incorrectas</div></div>
+    </div>
+    <div id="ex-rev" style="text-align:left;margin-bottom:16px"></div>
+    <button class="gbtn" onclick="restartEx()" style="margin-bottom:9px">🔄 Nuevo examen</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div id="s-stats" class="scr">
+  <div class="ph"><div class="ey">Tu rendimiento</div><h1>Estadísticas</h1></div>
+  <div class="tsc"><div class="big" id="st-avg">—</div><div class="lbl">Promedio general</div></div>
+  <div class="sg">
+    <div class="si"><div class="sn" id="st-ses">0</div><div class="sl">Sesiones</div></div>
+    <div class="si"><div class="sn" id="st-ans">0</div><div class="sl">Respondidas</div></div>
+    <div class="si"><div class="sn" id="st-str" style="color:var(--yel)">0</div><div class="sl">🔥 Racha</div></div>
+  </div>
+  <div class="sec">Más difíciles</div>
+  <div id="st-wk"><div class="emp"><div class="ei">🎯</div><p>Completá un quiz primero</p></div></div>
+  <div class="sec">Progreso por eje</div>
+  <div id="st-cat"><div class="emp"><div class="ei">📈</div><p>Rendí un examen primero</p></div></div>
+  <div class="sec">Historial</div>
+  <div id="st-hi"><div class="emp"><div class="ei">📋</div><p>Sin sesiones aún</p></div></div>
+  <div class="sec">Evolución en Examen</div>
+  <div id="st-evo"><div class="emp"><div class="ei">📈</div><p>Rendí un examen primero</p></div></div>
+  <button class="clr" onclick="clearAll()">🗑 Borrar historial</button>
+  <div class="cpy" style="margin-top:22px">© 2026 Javier "RED" Barrionuevo · Todos los derechos reservados. Esta herramienta es de uso personal y educativo. Queda prohibida su redistribución, modificación o comercialización sin autorización expresa del autor.</div>
+</div>
+
+<script src="data/categories.js"></script>
+<script src="data/questions.js"></script>
+<script src="data/exam.js"></script>
+<script src="scripts/stats.js"></script>
+<script src="scripts/repaso.js"></script>
+<script src="scripts/quiz.js"></script>
+<script src="scripts/exam.js"></script>
+<script src="scripts/splash.js"></script>
+<script src="scripts/nav.js"></script>
+<script src="scripts/app.js"></script>
+</body>
+</html>
