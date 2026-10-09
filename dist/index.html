@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
 <title>Arquitectura del Computador – RED</title>
+<script>try{if(localStorage.getItem('terms_accepted')==='true')document.documentElement.classList.add('tok');}catch(e){}</script>
 
 <!-- PWA -->
 <link rel="manifest" href="./manifest.json">
@@ -234,12 +235,23 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 .sci{font-size:12px;color:#8892a4;margin-bottom:3px;line-height:1.5;}
 .sci strong{color:#a0aab8;}
 .sci .ac{color:#C9A84C;}
-.cpy-splash{position:relative;max-width:320px;margin-top:6px;animation:tin .8s .7s ease both;}
 .stp{position:absolute;bottom:calc(32px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:11px;color:#3a4455;font-weight:600;letter-spacing:.1em;text-transform:uppercase;animation:blk 2s ease-in-out infinite 1.5s both;white-space:nowrap;}
 @keyframes blk{0%,100%{opacity:.3}50%{opacity:1}}
 .scl{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);animation:scn 3s linear infinite;pointer-events:none;}
 @keyframes scn{from{top:-2px}to{top:100%}}
 .hide{display:none!important;}
+
+/* TERMINOS DE USO */
+#terms{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;overflow-y:auto;padding:calc(20px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));}
+.tok #terms{display:none;}
+.tcard{width:100%;max-width:420px;margin:auto;background:var(--card);border:1px solid var(--brd);border-radius:15px;padding:22px;text-align:center;}
+.tcard h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:12px;}
+.tcard p{font-size:14px;line-height:1.7;color:var(--txt);margin-bottom:20px;}
+.tbtns{display:flex;gap:9px;}
+.tbtns button{flex:1;padding:13px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;min-height:44px;}
+.tbtns .tyes{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;}
+.tlock{font-size:38px;margin-bottom:10px;}
+.tcard .tmsg{font-size:16px;font-weight:700;color:#fff;}
 
 /* MOBILE / PWA */
 .ibw{padding:12px 16px 0;}
@@ -266,9 +278,24 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
     <div class="sci" style="margin-top:7px"><span class="ac">📚</span> Repaso · Quiz · Examen · Estadísticas</div>
     <div class="sci" style="margin-top:7px">v3.0 · Agosto 2026 &nbsp;|&nbsp; <span style="color:#3a4455">Desarrollado por Javier "RED" Barrionuevo · <span class="ac">@redyz31</span></span></div>
   </div>
-  <div class="cpy cpy-splash">© 2026 Javier "RED" Barrionuevo · Todos los derechos reservados. Esta herramienta es de uso personal y educativo. Queda prohibida su redistribución, modificación o comercialización sin autorización expresa del autor.</div>
-  <div class="cpy cpy-splash">⚠️ Esta herramienta es propiedad intelectual de Javier "RED" Barrionuevo. El código fuente, las preguntas y el diseño son de su autoría. Cualquier uso comercial, redistribución o apropiación del contenido sin autorización expresa será considerado una violación de los derechos del autor y podrá tener consecuencias legales.</div>
   <div class="stp">· Toca para continuar ·</div>
+</div>
+
+<!-- TÉRMINOS DE USO (bloquea la app hasta que se aceptan) -->
+<div id="terms" role="dialog" aria-modal="true" aria-labelledby="terms-t">
+  <div id="terms-ask" class="tcard">
+    <h2 id="terms-t">Términos de uso</h2>
+    <p>Esta herramienta es propiedad intelectual de Javier "RED" Barrionuevo. El contenido, código y diseño son de su autoría. Queda prohibido su uso comercial, redistribución o apropiación sin autorización expresa del autor.</p>
+    <div class="tbtns">
+      <button class="tyes" onclick="acceptTerms()">✓ Acepto</button>
+      <button class="bno" onclick="declineTerms()">✗ No acepto</button>
+    </div>
+  </div>
+  <div id="terms-block" class="tcard hide">
+    <div class="tlock">🔒</div>
+    <p class="tmsg">Debés aceptar los términos para usar esta app</p>
+    <button class="gbtn" onclick="retryTerms()">Volver a intentarlo</button>
+  </div>
 </div>
 
 <!-- NAV -->
@@ -2193,6 +2220,22 @@ function hideSplash(){
   setTimeout(function(){s.style.display='none';},650);
 }
 
+// ── TÉRMINOS DE USO ──
+// El estado inicial (modal visible u oculto) lo fija el script del <head>
+// leyendo localStorage 'terms_accepted', para que no haya parpadeo.
+function acceptTerms(){
+  try{localStorage.setItem('terms_accepted','true');}catch(e){}
+  document.documentElement.classList.add('tok');
+}
+function declineTerms(){
+  document.getElementById('terms-ask').classList.add('hide');
+  document.getElementById('terms-block').classList.remove('hide');
+}
+function retryTerms(){
+  document.getElementById('terms-block').classList.add('hide');
+  document.getElementById('terms-ask').classList.remove('hide');
+}
+
 // ── NAV ──
 var SCREENS=['repaso','quiz','examen','stats'];
 
@@ -2206,7 +2249,7 @@ function go(name,el){
 }
 
 // swipe horizontal entre pantallas (repaso ↔ quiz ↔ examen ↔ stats)
-var SWIPE_IGNORE='.fc, .opt, .mc, .pill, .tab, button, input, textarea, select, a';
+var SWIPE_IGNORE='#terms, .fc, .opt, .mc, .pill, .tab, button, input, textarea, select, a';
 function initScreenSwipe(){
   swipeH(document.body, function(){ // swipe izquierda → siguiente pantalla
     changeScreen(1);

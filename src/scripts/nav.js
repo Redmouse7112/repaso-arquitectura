@@ -11,7 +11,7 @@ function go(name,el){
 }
 
 // swipe horizontal entre pantallas (repaso ↔ quiz ↔ examen ↔ stats)
-var SWIPE_IGNORE='.fc, .opt, .mc, .pill, .tab, button, input, textarea, select, a';
+var SWIPE_IGNORE='#terms, .fc, .opt, .mc, .pill, .tab, button, input, textarea, select, a';
 function initScreenSwipe(){
   swipeH(document.body, function(){ // swipe izquierda → siguiente pantalla
     changeScreen(1);

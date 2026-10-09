@@ -24,6 +24,7 @@ JS_FILES = [
     SRC / "scripts" / "quiz.js",
     SRC / "scripts" / "exam.js",
     SRC / "scripts" / "splash.js",
+    SRC / "scripts" / "terms.js",
     SRC / "scripts" / "nav.js",
     SRC / "scripts" / "app.js",
 ]
