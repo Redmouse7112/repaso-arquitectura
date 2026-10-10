@@ -4,7 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
 <title>Arquitectura del Computador – RED</title>
-<script>try{if(localStorage.getItem('terms_accepted')==='true')document.documentElement.classList.add('tok');}catch(e){}</script>
+<script>
+// Versión de la licencia: si cambia, el modal de aceptación vuelve a aparecer para todos.
+const LICENSE_VERSION = "2026-10";
+// Si localStorage no está disponible, se usa uno en memoria para que la app funcione esa sesión.
+try{localStorage.getItem('arq_license');}catch(e){
+  var mem={};
+  Object.defineProperty(window,'localStorage',{configurable:true,value:{
+    getItem:function(k){return Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null;},
+    setItem:function(k,v){mem[k]=String(v);},
+    removeItem:function(k){delete mem[k];},
+    clear:function(){mem={};}
+  }});
+}
+// Decide acá (antes del primer pintado) si ya aceptó esta versión, para evitar parpadeos.
+try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===LICENSE_VERSION)document.documentElement.classList.add('lic-ok');}catch(e){}
+</script>
 
 <!-- PWA -->
 <link rel="manifest" href="../public/manifest.json">
@@ -34,26 +49,32 @@
     <div class="sct">Sobre esta herramienta</div>
     <div class="sci"><strong>Repaso oral interactivo</strong><br>Arquitectura del Computador y Redes</div>
     <div class="sci" style="margin-top:7px"><span class="ac">📚</span> Repaso · Quiz · Examen · Estadísticas</div>
-    <div class="sci" style="margin-top:7px">v3.0 · Agosto 2026 &nbsp;|&nbsp; <span style="color:#3a4455">Desarrollado por Javier "RED" Barrionuevo · <span class="ac">@redyz31</span></span></div>
+    <div class="sci" style="margin-top:7px">v3.1 · Agosto 2026 &nbsp;|&nbsp; <span style="color:#3a4455">Desarrollado por Javier "RED" Barrionuevo · <span class="ac">@redyz31</span></span></div>
   </div>
-  <div class="cpy cpy-splash">© 2026 Javier "RED" Barrionuevo · Todos los derechos reservados.</div>
+  <div class="cpy cpy-splash">© 2026 Javier "RED" Barrionuevo · Todos los derechos reservados.<br>Licencia propietaria de código visible.</div>
   <div class="stp">· Toca para continuar ·</div>
 </div>
 
-<!-- TÉRMINOS DE USO (bloquea la app hasta que se aceptan) -->
-<div id="terms" role="dialog" aria-modal="true" aria-labelledby="terms-t">
-  <div id="terms-ask" class="tcard">
-    <h2 id="terms-t">Términos de uso</h2>
-    <p>Esta herramienta es propiedad intelectual de Javier "RED" Barrionuevo. El contenido, código y diseño son de su autoría. Queda prohibido su uso comercial, redistribución o apropiación sin autorización expresa del autor.</p>
-    <div class="tbtns">
-      <button class="tyes" onclick="acceptTerms()">✓ Acepto</button>
-      <button class="bno" onclick="declineTerms()">✗ No acepto</button>
+<!-- LICENCIA: modal de aceptación obligatoria (sin cierre; bloquea la app hasta aceptar) -->
+<div id="lic" role="dialog" aria-modal="true" aria-labelledby="lic-t" aria-describedby="lic-sum">
+  <div class="lic-card">
+    <div class="lic-body">
+      <h2 id="lic-t" tabindex="-1">Antes de empezar</h2>
+      <ol id="lic-sum" class="lic-sum">
+        <li>La app y su código pertenecen a Javier Barrionuevo (RED).</li>
+        <li>Podés usarla y leer el código con fines educativos.</li>
+        <li>No podés copiarla, modificarla, redistribuirla, venderla ni usarla para entrenar sistemas de IA sin autorización escrita.</li>
+        <li>Sin garantía — es una herramienta de estudio personal, no un producto comercial.</li>
+        <li>Incumplir la licencia termina tus permisos de uso.</li>
+      </ol>
+      <a class="lic-link" href="https://github.com/Redmouse7112/repaso-arquitectura/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Leer la licencia completa<span aria-hidden="true"> ↗</span><span class="sr"> (se abre en una pestaña nueva)</span></a>
     </div>
-  </div>
-  <div id="terms-block" class="tcard hide">
-    <div class="tlock">🔒</div>
-    <p class="tmsg">Debés aceptar los términos para usar esta app</p>
-    <button class="gbtn" onclick="retryTerms()">Volver a intentarlo</button>
+    <div class="lic-foot">
+      <label class="lic-chk"><input type="checkbox" id="lic-chk" autocomplete="off"><span>Leí y acepto los términos de la licencia</span></label>
+      <button type="button" id="lic-yes" class="lic-btn lic-pri" disabled>Aceptar y continuar</button>
+      <button type="button" id="lic-no" class="lic-btn lic-sec">No acepto</button>
+      <div id="lic-msg" class="lic-msg" role="alert"></div>
+    </div>
   </div>
 </div>
 
@@ -204,6 +225,7 @@
   <div class="cpy" style="margin-top:22px">© 2026 Javier "RED" Barrionuevo · Todos los derechos reservados. Esta herramienta es de uso personal y educativo. Queda prohibida su redistribución, modificación o comercialización sin autorización expresa del autor.</div>
 </div>
 
+<script src="scripts/license.js"></script>
 <script src="data/categories.js"></script>
 <script src="data/questions.js"></script>
 <script src="data/exam.js"></script>
@@ -212,7 +234,6 @@
 <script src="scripts/quiz.js"></script>
 <script src="scripts/exam.js"></script>
 <script src="scripts/splash.js"></script>
-<script src="scripts/terms.js"></script>
 <script src="scripts/nav.js"></script>
 <script src="scripts/app.js"></script>
 </body>

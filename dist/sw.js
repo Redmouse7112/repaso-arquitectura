@@ -1,7 +1,7 @@
 // Service Worker: cache-first con actualizacion en segundo plano.
 // Pensado para el bundle de /dist (index.html + manifest.json + iconos, todos
 // en el mismo directorio que este archivo).
-var CACHE_NAME = 'arq-red-v1';
+var CACHE_NAME = 'arq-red-v2';
 var PRECACHE = [
   './',
   './index.html',
@@ -13,7 +13,7 @@ var PRECACHE = [
 self.addEventListener('install', function(event){
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(function(cache){ return cache.addAll(PRECACHE); })
+      .then(function(cache){ return cache.addAll(PRECACHE.map(function(u){return new Request(u,{cache:'reload'});})); })
       .then(function(){ return self.skipWaiting(); })
   );
 });
