@@ -170,6 +170,9 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 .ray{font-size:13px;margin-bottom:2px;}
 .ray.w{color:var(--red);}
 .rac{font-size:13px;color:var(--grn);}
+.rtb{display:inline-flex;align-items:center;min-height:44px;margin-top:10px;padding:8px 14px;border-radius:10px;background:var(--sur);border:1px solid var(--brd);color:var(--acc);font:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+.rtp{margin:10px 0 0;}
+.rtp .fcq{cursor:default;}
 
 /* STATS */
 .tsc{background:linear-gradient(135deg,#1a2035,#21253a);border:1px solid var(--acc);border-radius:15px;padding:22px;text-align:center;margin-bottom:18px;}

@@ -93,7 +93,7 @@ function pickO(idx,qid){
   else{fails[qid]=(fails[qid]||0)+1;localStorage.setItem('af',JSON.stringify(fails));}
   var qCat=CATS.find(function(c){return c.label===q.cat;});
   if(qCat)recExamCat(qCat.id,ok);
-  eRes.push({q:q.q,cat:q.cat,ok:ok,your:curOpts[idx],ans:curOpts[curCorrect]});
+  eRes.push({id:qid,q:q.q,cat:q.cat,ok:ok,your:curOpts[idx],ans:curOpts[curCorrect]});
   var nb=document.getElementById('ex-nb');
   nb.textContent=eI+1>=eQ.length?'Ver resultado →':'Siguiente →';
   nb.classList.add('on');
@@ -115,15 +115,68 @@ function endEx(){
   document.getElementById('ex-ok').textContent=eOk;
   document.getElementById('ex-wr').textContent=eQ.length-eOk;
   var rv='<div class="sec" style="margin-top:0">Revisión</div>';
-  eRes.forEach(function(r){
+  eRes.forEach(function(r,i){
+    var t=r.ok?null:findTheory(EQ.find(function(x){return x.id===r.id;}));
     rv+='<div class="rai '+(r.ok?'ok':'no')+'"><div class="raq">'+r.q+'</div>'
       +'<div class="ray'+(r.ok?'':' w')+'">Tu respuesta: '+r.your+'</div>'
       +(r.ok?'':'<div class="rac">✓ Correcta: '+r.ans+'</div>')
+      +(t?theoryHTML(t,i):'')
       +'</div>';
   });
   document.getElementById('ex-rev').innerHTML=rv;
   saveSes(pct,eOk,0,eQ.length-eOk,eQ.length,'examen');
   document.getElementById('ex-res').classList.add('on');
+}
+// ── teoría de Repaso para las preguntas falladas ──
+// Busca en Q, dentro del mismo eje (cat), la tarjeta con más palabras en común
+// (pregunta y respuesta correcta pesan más que el feedback); si ninguna coincide, la primera del eje.
+var TH_STOP={};
+'para como cual cuales entre desde sobre sino esta este estos estas donde pero porque cada todo todos solo tiene tienen hace puede pueden mismo tambien mas menos muy una uno unos unas del con que por son ser era nodo'.split(' ').forEach(function(w){TH_STOP[w]=1;});
+var thDf=null;
+function thToks(str){
+  var o={};
+  str.replace(/<[^>]*>/g,' ').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().split(/[^a-z0-9]+/).forEach(function(w){
+    if(w.length>=4&&!TH_STOP[w])o[w]=1;
+  });
+  return o;
+}
+function findTheory(e){
+  if(!e)return null;
+  var c=CATS.find(function(x){return x.label===e.cat;});
+  if(!c)return null;
+  var pool=Q.filter(function(q){return q.cat===c.id;});
+  if(!pool.length)return null;
+  if(!thDf){
+    thDf={};
+    Q.forEach(function(q){Object.keys(thToks(q.q+' '+q.a+' '+(q.tip||''))).forEach(function(w){thDf[w]=(thDf[w]||0)+1;});});
+  }
+  var want={};
+  [[e.q+' '+e.opts[e.correct],2],[e.feedback,1]].forEach(function(p){
+    Object.keys(thToks(p[0])).forEach(function(w){want[w]=Math.max(want[w]||0,p[1]);});
+  });
+  var best=pool[0],bs=0;
+  pool.forEach(function(q){
+    var tt=thToks(q.q),ta=thToks(q.a+' '+(q.tip||'')),s=0;
+    Object.keys(want).forEach(function(w){
+      var idf=Math.log((Q.length+1)/((thDf[w]||0)+1))+0.1;
+      if(tt[w])s+=3*want[w]*idf;else if(ta[w])s+=want[w]*idf;
+    });
+    s/=Math.sqrt(Object.keys(ta).length+Object.keys(tt).length+1);
+    if(s>bs){bs=s;best=q;}
+  });
+  return best;
+}
+function theoryHTML(t,i){
+  return '<button type="button" class="rtb" aria-expanded="false" aria-controls="rt-'+i+'" onclick="togTeoria('+i+',this)">📖 Ver teoría</button>'
+    +'<div class="fc open rtp hide" id="rt-'+i+'">'
+    +'<div class="fcq"><div><div class="ql">'+t.catLabel+'</div><div class="qt">'+t.q+'</div></div></div>'
+    +'<div class="fca"><div class="al">Respuesta</div>'
+    +'<div class="at">'+t.a+(t.tip?'<div class="tip"><strong>💡 Tip:</strong> '+t.tip+'</div>':'')+'</div></div></div>';
+}
+function togTeoria(i,btn){
+  var closed=document.getElementById('rt-'+i).classList.toggle('hide');
+  btn.setAttribute('aria-expanded',closed?'false':'true');
+  btn.textContent=closed?'📖 Ver teoría':'📖 Ocultar teoría';
 }
 function restartEx(){
   document.getElementById('ex-res').classList.remove('on');
