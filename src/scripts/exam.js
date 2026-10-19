@@ -3,6 +3,8 @@ var eQ=[], eI=0, eOk=0, eRes=[];
 var eQty=10, eFilt=['all'];
 var eMode='mc', eSrc='std', eRun='mc'; // modo/origen elegidos y modo de la sesión en curso
 var curOpts=[], curCorrect=0;
+var eKind='examen'; // 'examen' | 'rapido' (repaso rápido del Quiz)
+var eFull=false;    // respuesta oral: ¿se muestra la versión completa?
 var eWritten=null; // resultado de la verificación de la pregunta oral en curso
 
 function buildExPills(){
@@ -60,7 +62,7 @@ function pickES(src,el){
 }
 // pills operables con teclado (Enter / Espacio)
 document.addEventListener('keydown',function(e){
-  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('#ex-mode .pill, #ex-src .pill')){
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('#ex-mode .pill, #ex-src .pill, .mc-fast')){
     e.preventDefault();e.target.click();
   }
 });
@@ -78,7 +80,7 @@ function startEx(){
   }
   pool=pool.sort(function(){return Math.random()-.5;});
   eQ=eQty>0?pool.slice(0,eQty):pool;
-  eRun=eMode;
+  eRun=eMode;eKind='examen';
   eI=0;eOk=0;eRes=[];
   document.getElementById('ex-set').classList.add('hide');
   document.getElementById('ex-res').classList.remove('on');
@@ -139,11 +141,40 @@ function oralDiff(q){
   });
   return (oralDiffCache[q.id]=best);
 }
+// Versión condensada de la respuesta: hasta 5 puntos de lista con <strong>; sin lista, las 2 primeras oraciones
+function condenseA(html){
+  var box=document.createElement('div');
+  box.innerHTML=html;
+  var lis=[].slice.call(box.querySelectorAll('li')).filter(function(li){return li.querySelector('strong');});
+  var out;
+  if(lis.length){
+    out='<ul>'+lis.slice(0,5).map(function(li){return '<li>'+li.innerHTML+'</li>';}).join('')+'</ul>';
+  } else {
+    var t=html.replace(/<br\s*\/?>/gi,' ').replace(/<strong[^>]*>/gi,'<strong>').replace(/<(?!\/?strong>)[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+    var ss=t.match(/[^.!?]+[.!?]+(\s|$)/g)||[t];
+    out='<div>'+ss.slice(0,2).join('').trim()+'</div>';
+  }
+  box.innerHTML=out; // cierra etiquetas que haya cortado el recorte
+  return box.innerHTML;
+}
+function renderOralA(){
+  var q=eQ[eI];
+  var cond=condenseA(q.a);
+  var short=kwPlain(cond).length>=kwPlain(q.a).length*0.9; // la condensada no ahorra nada: sin botón
+  document.getElementById('ex-oat').innerHTML=kwHighlight(eFull||short?q.a:cond,eWritten.kws)
+    +(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'');
+  var fb=document.getElementById('ex-full');
+  fb.classList.toggle('hide',short);
+  fb.setAttribute('aria-expanded',eFull?'true':'false');
+  fb.textContent=eFull?'Ver resumida':'Ver completa';
+}
+function togFull(){eFull=!eFull;renderOralA();}
 function verifyOral(){
   var q=eQ[eI];
   var ta=document.getElementById('ex-txt');
   var res=checkWritten(q,ta.value);
-  eWritten={text:ta.value.trim(),found:res.found,total:res.total};
+  eWritten={text:ta.value.trim(),found:res.found,total:res.total,kws:res.kws};
+  eFull=false;
   ta.readOnly=true;
   document.getElementById('ex-ver').classList.add('hide');
   document.getElementById('ex-ors').textContent='Encontraste '+res.found+' de '+res.total+' conceptos clave';
@@ -152,8 +183,7 @@ function verifyOral(){
     li+='<li class="'+(k.found?'y':'n')+'">'+(k.found?'✓ ':'✗ ')+kwEsc(k.label)+'</li>';
   });
   document.getElementById('ex-okw').innerHTML=li;
-  document.getElementById('ex-oat').innerHTML=kwHighlight(q.a,res.kws)
-    +(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'');
+  renderOralA();
   var a=document.getElementById('ex-oa');
   a.style.display='block';
   a.setAttribute('tabindex','-1');
@@ -166,8 +196,8 @@ function markOral(ok){
   var q=eQ[eI];
   if(ok)eOk++;
   else{fails[q.id]=(fails[q.id]||0)+1;localStorage.setItem('af',JSON.stringify(fails));}
-  recExamCat(q.cat,ok);
-  eRes.push({id:q.id,q:q.q,cat:q.catLabel,ok:ok,oral:true,item:q,w:eWritten});
+  if(eKind==='examen')recExamCat(q.cat,ok);
+  eRes.push({id:q.id,q:q.q,cat:q.catLabel,ok:ok,oral:true,item:q,w:eWritten?{text:eWritten.text,found:eWritten.found,total:eWritten.total}:null});
   eI++;
   showExQ();
   var w=document.getElementById('ex-qw');
@@ -224,7 +254,11 @@ function endEx(){
       +'</div>';
   });
   document.getElementById('ex-rev').innerHTML=rv;
-  saveSes(pct,eOk,0,eQ.length-eOk,eQ.length,'examen');
+  var rapid=eKind==='rapido';
+  document.getElementById('ex-rtitle').textContent=rapid?'Resultado del repaso rápido':'Resultado del examen';
+  document.getElementById('ex-again').textContent=rapid?'⚡ Otro repaso rápido':'🔄 Nuevo examen';
+  document.getElementById('ex-qback').classList.toggle('hide',!rapid);
+  saveSes(pct,eOk,0,eQ.length-eOk,eQ.length,rapid?'repaso rápido':'examen');
   document.getElementById('ex-res').classList.add('on');
 }
 // ── teoría de Repaso para las preguntas falladas ──
@@ -287,7 +321,36 @@ function togTeoria(i,btn){
     },100);
   }
 }
+// ── repaso rápido (Quiz): las 10 con más errores, completadas con aleatorias, en modo oral escrito ──
+function startRapido(){
+  var byId={};
+  Q.forEach(function(q){byId[q.id]=q;});
+  var ids=Object.keys(fails).filter(function(id){return byId[id]&&fails[id]>0;});
+  ids.sort(function(){return Math.random()-.5;}); // desempata al azar
+  ids.sort(function(a,b){return fails[b]-fails[a];});
+  var pick=ids.slice(0,10).map(function(id){return byId[id];});
+  if(pick.length<10){
+    var rest=Q.filter(function(q){return pick.indexOf(q)<0;}).sort(function(){return Math.random()-.5;});
+    pick=pick.concat(rest.slice(0,10-pick.length));
+  }
+  eQ=pick.sort(function(){return Math.random()-.5;});
+  eRun='oral';eKind='rapido';
+  eI=0;eOk=0;eRes=[];
+  go('examen');
+  document.getElementById('ex-set').classList.add('hide');
+  document.getElementById('ex-res').classList.remove('on');
+  document.getElementById('ex-qw').classList.add('on');
+  showExQ();
+  window.scrollTo(0,0);
+}
+function backFromRapido(){
+  eKind='examen';
+  document.getElementById('ex-res').classList.remove('on');
+  document.getElementById('ex-set').classList.remove('hide');
+  go('quiz');
+}
 function restartEx(){
+  if(eKind==='rapido'){startRapido();return;}
   document.getElementById('ex-res').classList.remove('on');
   document.getElementById('ex-set').classList.remove('hide');
 }

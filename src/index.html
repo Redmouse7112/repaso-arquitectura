@@ -113,6 +113,7 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
       <div class="mc" onclick="pickM('oral',this)"><div class="mi">🎤</div><div class="mn">Simulación Oral</div><div class="md">Con cronómetro</div></div>
       <div class="mc" onclick="pickM('weak',this)"><div class="mi">🔥</div><div class="mn">Solo difíciles</div><div class="md">Las que fallaste</div></div>
       <div class="mc" onclick="pickM('rand',this)"><div class="mi">🎲</div><div class="mn">Aleatorio</div><div class="md">Orden sorpresa</div></div>
+      <div class="mc mc-fast" role="button" tabindex="0" onclick="startRapido()"><div class="mi">⚡</div><div class="mn">Repaso rápido</div><div class="md">Tus 10 con más errores · arranca ya</div></div>
     </div>
     <p style="font-size:13px;color:var(--mut);margin-bottom:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Temas</p>
     <div class="pills" id="qz-pils"></div>
@@ -209,6 +210,7 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
           <div class="kws" id="ex-ors" role="status"></div>
           <ul class="kwl" id="ex-okw"></ul>
           <div class="al">Respuesta</div><div class="at" id="ex-oat"></div>
+          <button type="button" class="kwfull" id="ex-full" aria-expanded="false" onclick="togFull()">Ver completa</button>
           <div class="vd"><button type="button" class="bok" onclick="markOral(true)">✓ La sabía</button><button type="button" class="bno" onclick="markOral(false)">✗ No la sabía</button></div>
         </div>
       </div>
@@ -217,7 +219,7 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
     <button class="enb" id="ex-nb" onclick="nextEx()">Siguiente →</button>
   </div>
   <div class="erw" id="ex-res">
-    <div class="ey" style="margin-bottom:12px">Resultado del examen</div>
+    <div class="ey" id="ex-rtitle" style="margin-bottom:12px">Resultado del examen</div>
     <div class="esc" id="ex-cir"><span id="ex-pct">0%</span></div>
     <div class="eg" id="ex-grd"></div>
     <div class="es" id="ex-sub"></div>
@@ -226,7 +228,8 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
       <div class="ebi"><div class="ebn" style="color:var(--red)" id="ex-wr">0</div><div class="ebl">✗ Incorrectas</div></div>
     </div>
     <div id="ex-rev" style="text-align:left;margin-bottom:16px"></div>
-    <button class="gbtn" onclick="restartEx()" style="margin-bottom:9px">🔄 Nuevo examen</button>
+    <button class="gbtn" id="ex-again" onclick="restartEx()" style="margin-bottom:9px">🔄 Nuevo examen</button>
+    <button class="rvbtn hide" id="ex-qback" onclick="backFromRapido()">↩ Volver al Quiz</button>
   </div>
 </div>
 
