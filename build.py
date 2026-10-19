@@ -23,6 +23,7 @@ JS_FILES = [
     SRC / "scripts" / "stats.js",
     SRC / "scripts" / "repaso.js",
     SRC / "scripts" / "quiz.js",
+    SRC / "scripts" / "keywords.js",
     SRC / "scripts" / "exam.js",
     SRC / "scripts" / "splash.js",
     SRC / "scripts" / "nav.js",

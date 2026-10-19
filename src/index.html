@@ -201,10 +201,16 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
     <div class="eqc"><div class="eq" id="ex-q"></div></div>
     <div class="opts" id="ex-opts"></div>
     <div id="ex-oral" class="hide">
-      <button type="button" class="rvbtn" id="ex-show" onclick="showOralA()">👁 Ver respuesta</button>
+      <label class="otl" for="ex-txt">Tu respuesta</label>
+      <textarea id="ex-txt" class="ota" rows="5" placeholder="Escribí tu respuesta con tus palabras…" autocomplete="off" spellcheck="false"></textarea>
+      <button type="button" class="gbtn" id="ex-ver" onclick="verifyOral()">Verificar respuesta</button>
       <div class="fc open" id="ex-oa" style="display:none;margin-bottom:0;text-align:left">
-        <div class="fca"><div class="al">Respuesta</div><div class="at" id="ex-oat"></div>
-        <div class="vd"><button type="button" class="bok" onclick="markOral(true)">✓ La sabía</button><button type="button" class="bno" onclick="markOral(false)">✗ No la sabía</button></div></div>
+        <div class="fca">
+          <div class="kws" id="ex-ors" role="status"></div>
+          <ul class="kwl" id="ex-okw"></ul>
+          <div class="al">Respuesta</div><div class="at" id="ex-oat"></div>
+          <div class="vd"><button type="button" class="bok" onclick="markOral(true)">✓ La sabía</button><button type="button" class="bno" onclick="markOral(false)">✗ No la sabía</button></div>
+        </div>
       </div>
     </div>
     <div class="fb" id="ex-fb"><div class="fbt" id="ex-fbt"></div><div class="fbc" id="ex-fbc"></div></div>
@@ -252,6 +258,7 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
 <script src="scripts/stats.js"></script>
 <script src="scripts/repaso.js"></script>
 <script src="scripts/quiz.js"></script>
+<script src="scripts/keywords.js"></script>
 <script src="scripts/exam.js"></script>
 <script src="scripts/splash.js"></script>
 <script src="scripts/nav.js"></script>

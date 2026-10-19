@@ -3,6 +3,7 @@ var eQ=[], eI=0, eOk=0, eRes=[];
 var eQty=10, eFilt=['all'];
 var eMode='mc', eSrc='std', eRun='mc'; // modo/origen elegidos y modo de la sesión en curso
 var curOpts=[], curCorrect=0;
+var eWritten=null; // resultado de la verificación de la pregunta oral en curso
 
 function buildExPills(){
   var f=document.getElementById('ex-pils');
@@ -49,7 +50,7 @@ function pickEM(mode,el){
   // el modo oral usa las tarjetas del Repaso (Q): no aplica el origen estándar/variantes
   document.getElementById('ex-src-wrap').classList.toggle('hide',oral);
   document.getElementById('ex-desc').textContent=oral
-    ?'Te preguntan sin opciones: pensá la respuesta en voz alta, mirala y marcá si la sabías. Al final ves tu nota real.'
+    ?'Te preguntan sin opciones: escribí tu respuesta, el sistema cuenta cuántos conceptos clave incluiste y vos te calificás. Al final ves tu nota real.'
     :'Elegís una opción. El sistema te muestra al instante si acertaste. Al final ves tu nota real.';
   document.getElementById('ex-start').textContent=oral?'🎤 Empezar examen oral':'📝 Empezar examen';
 }
@@ -105,9 +106,11 @@ function showExQ(){
   document.getElementById('ex-opts').classList.toggle('hide',oral);
   document.getElementById('ex-oral').classList.toggle('hide',!oral);
   if(oral){
-    document.getElementById('ex-oat').innerHTML=q.a+(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'');
-    document.getElementById('ex-show').classList.remove('hide');
+    var ta=document.getElementById('ex-txt');
+    ta.value='';ta.readOnly=false;
+    document.getElementById('ex-ver').classList.remove('hide');
     document.getElementById('ex-oa').style.display='none';
+    eWritten=null;
     return;
   }
   var order=q.opts.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
@@ -136,20 +139,35 @@ function oralDiff(q){
   });
   return (oralDiffCache[q.id]=best);
 }
-function showOralA(){
-  document.getElementById('ex-show').classList.add('hide');
+function verifyOral(){
+  var q=eQ[eI];
+  var ta=document.getElementById('ex-txt');
+  var res=checkWritten(q,ta.value);
+  eWritten={text:ta.value.trim(),found:res.found,total:res.total};
+  ta.readOnly=true;
+  document.getElementById('ex-ver').classList.add('hide');
+  document.getElementById('ex-ors').textContent='Encontraste '+res.found+' de '+res.total+' conceptos clave';
+  var li='';
+  res.kws.forEach(function(k){
+    li+='<li class="'+(k.found?'y':'n')+'">'+(k.found?'✓ ':'✗ ')+kwEsc(k.label)+'</li>';
+  });
+  document.getElementById('ex-okw').innerHTML=li;
+  document.getElementById('ex-oat').innerHTML=kwHighlight(q.a,res.kws)
+    +(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'');
   var a=document.getElementById('ex-oa');
   a.style.display='block';
   a.setAttribute('tabindex','-1');
   a.style.outline='none';
   a.focus({preventScroll:true});
+  var nav=document.querySelector('.nav');
+  window.scrollTo(0,Math.max(0,a.getBoundingClientRect().top+window.pageYOffset-(nav?nav.offsetHeight:0)-8));
 }
 function markOral(ok){
   var q=eQ[eI];
   if(ok)eOk++;
   else{fails[q.id]=(fails[q.id]||0)+1;localStorage.setItem('af',JSON.stringify(fails));}
   recExamCat(q.cat,ok);
-  eRes.push({id:q.id,q:q.q,cat:q.catLabel,ok:ok,oral:true,item:q});
+  eRes.push({id:q.id,q:q.q,cat:q.catLabel,ok:ok,oral:true,item:q,w:eWritten});
   eI++;
   showExQ();
   var w=document.getElementById('ex-qw');
@@ -197,7 +215,9 @@ function endEx(){
     var t=r.ok?null:(r.oral?r.item:findTheory(r.item));
     rv+='<div class="rai '+(r.ok?'ok':'no')+'"><div class="raq">'+r.q+'</div>'
       +(r.oral
-        ?'<div class="ray'+(r.ok?'':' w')+'">'+(r.ok?'✓ La sabías':'✗ No la sabías')+'</div>'
+        ?'<div class="ray'+(r.ok?'':' w')+'">'+(r.ok?'✓ La sabías':'✗ No la sabías')
+          +(r.w?' · '+r.w.found+' de '+r.w.total+' conceptos clave':'')+'</div>'
+          +(r.w&&r.w.text?'<div class="ray" style="color:var(--mut);white-space:pre-wrap">Tu respuesta: '+kwEsc(r.w.text.length>240?r.w.text.slice(0,240)+'…':r.w.text)+'</div>':'')
         :'<div class="ray'+(r.ok?'':' w')+'">Tu respuesta: '+r.your+'</div>'
           +(r.ok?'':'<div class="rac">✓ Correcta: '+r.ans+'</div>'))
       +(t?theoryHTML(t,i):'')
