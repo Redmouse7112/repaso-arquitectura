@@ -277,7 +277,15 @@ function togTeoria(i,btn){
   var closed=document.getElementById('rt-'+i).classList.toggle('hide');
   btn.setAttribute('aria-expanded',closed?'false':'true');
   btn.textContent=closed?'📖 Ver teoría':'📖 Ocultar teoría';
-  if(!closed)document.getElementById('rt-'+i).scrollIntoView({behavior:'smooth',block:'center'});
+  if(!closed){
+    // scroll manual tras renderizar el panel; el offset evita que lo tape el nav fijo
+    setTimeout(function(){
+      var el=document.getElementById('rt-'+i);
+      var nav=document.querySelector('.nav');
+      var top=el.getBoundingClientRect().top+window.scrollY-Math.max(80,(nav?nav.offsetHeight:0)+12);
+      window.scrollTo({top:top,behavior:'smooth'});
+    },100);
+  }
 }
 function restartEx(){
   document.getElementById('ex-res').classList.remove('on');
