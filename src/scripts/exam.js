@@ -277,6 +277,7 @@ function togTeoria(i,btn){
   var closed=document.getElementById('rt-'+i).classList.toggle('hide');
   btn.setAttribute('aria-expanded',closed?'false':'true');
   btn.textContent=closed?'📖 Ver teoría':'📖 Ocultar teoría';
+  if(!closed)document.getElementById('rt-'+i).scrollIntoView({behavior:'smooth',block:'center'});
 }
 function restartEx(){
   document.getElementById('ex-res').classList.remove('on');

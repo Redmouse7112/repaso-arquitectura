@@ -1,7 +1,7 @@
 // Service Worker: cache-first con actualizacion en segundo plano.
 // Pensado para el bundle de /dist (index.html + manifest.json + iconos, todos
 // en el mismo directorio que este archivo).
-var CACHE_NAME = 'arq-red-v4';
+var CACHE_NAME = 'arq-red-v5';
 var PRECACHE = [
   './',
   './index.html',

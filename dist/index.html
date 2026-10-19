@@ -666,7 +666,7 @@ const Q = [
     "cat": "eje1",
     "catLabel": "Eje 1",
     "q": "¿Qué es el Chipset y cómo evolucionó?",
-    "a": "El <strong>Chipset</strong> es el conjunto de circuitos en la placa madre que gestiona la comunicación entre todos los componentes del sistema. Históricamente se dividía en dos partes:<ul>\n<li><strong>Northbridge (Puente Norte):</strong> manejaba las conexiones de <strong>alta velocidad</strong> — CPU con RAM y GPU. Era el componente más crítico del chipset.</li>\n<li><strong>Southbridge (Puente Sur):</strong> manejaba conexiones de menor velocidad — USB, SATA, PCI, audio. Se comunicaba con el Northbridge como intermediario.</li>\n</ul>\n<strong>Evolución:</strong> a partir de los procesadores modernos (Intel desde 2008 con Nehalem, AMD con sus APUs), el <strong>Northbridge fue integrado dentro del propio die de la CPU</strong>. Esto eliminó la latencia de comunicación CPU↔RAM y mejoró el rendimiento significativamente. Hoy el Chipset equivale al antiguo Southbridge, ahora llamado <strong>PCH (Platform Controller Hub)</strong> en Intel.",
+    "a": "El <strong>Chipset</strong> es el conjunto de circuitos en la placa madre que gestiona la comunicación entre todos los componentes del sistema. Históricamente se dividía en dos partes:<ul>\n<li><strong>Northbridge (Puente Norte):</strong> manejaba las conexiones de <strong>alta velocidad</strong> — CPU con RAM y GPU. Era el componente más crítico del chipset.</li>\n<li><strong>Southbridge (Puente Sur):</strong> manejaba conexiones de menor velocidad — USB, SATA, PCI, audio. Se comunicaba con el Northbridge como intermediario.</li>\n</ul>\n<strong>Evolución:</strong> a partir de los procesadores modernos (Intel desde <strong>2008</strong> con <strong>Nehalem</strong>, AMD con sus APUs), el <strong>Northbridge fue integrado dentro del propio die de la CPU</strong>. Esto eliminó la <strong>latencia</strong> de comunicación CPU↔RAM y mejoró el rendimiento significativamente. Hoy el Chipset equivale al <strong>antiguo Southbridge</strong>, ahora llamado <strong>PCH (Platform Controller Hub)</strong> en Intel.",
     "tip": "Pregunta trampa clásica: ¿Dónde está el Northbridge hoy? Dentro de la CPU desde ~2008. Si el profe pregunta por qué se integró: para reducir la latencia entre CPU y RAM."
   },
   {
@@ -682,7 +682,7 @@ const Q = [
     "cat": "eje1",
     "catLabel": "Eje 1",
     "q": "¿Qué es la memoria caché, para qué sirve y cuáles son sus niveles?",
-    "a": "La <strong>memoria caché</strong> es una memoria ultra-rápida ubicada entre la CPU y la RAM. Su función es reducir el tiempo de acceso a datos que el procesador usa con frecuencia, evitando ir a buscarlos a la RAM cada vez.<br><br>\nSe basa en el <strong>principio de localidad</strong>:\n<ul>\n<li><strong>Localidad temporal:</strong> si un dato fue usado recientemente, probablemente se use de nuevo pronto.</li>\n<li><strong>Localidad espacial:</strong> si se accedió a una dirección, es probable acceder a las vecinas.</li>\n</ul>\n<strong>Sus niveles:</strong>\n<ul>\n<li><strong>L1:</strong> dentro del núcleo del procesador. Rapidísima, muy pequeña (32-128 KB). Latencia de 1-4 ciclos.</li>\n<li><strong>L2:</strong> más grande (256 KB - 1 MB por núcleo). Algo más lenta que L1.</li>\n<li><strong>L3:</strong> compartida entre todos los núcleos. Varios MB hasta 64 MB en CPUs modernas. Más lenta que L1/L2 pero mucho más rápida que la RAM.</li>\n</ul>",
+    "a": "La <strong>memoria caché</strong> es una memoria <strong>ultra-rápida</strong> ubicada entre la CPU y la RAM. Su función es reducir el tiempo de acceso a datos que el procesador usa con frecuencia, evitando ir a buscarlos a la RAM cada vez.<br><br>\nSe basa en el <strong>principio de localidad</strong>:\n<ul>\n<li><strong>Localidad temporal:</strong> si un dato fue usado recientemente, probablemente se use de nuevo pronto.</li>\n<li><strong>Localidad espacial:</strong> si se accedió a una dirección, es probable acceder a las vecinas.</li>\n</ul>\n<strong>Sus niveles:</strong>\n<ul>\n<li><strong>L1:</strong> dentro del núcleo del procesador. Rapidísima, muy pequeña (32-128 KB). Latencia de 1-4 ciclos.</li>\n<li><strong>L2:</strong> más grande (256 KB - 1 MB por núcleo). Algo más lenta que L1.</li>\n<li><strong>L3:</strong> <strong>compartida entre todos los núcleos</strong>. Varios MB hasta 64 MB en CPUs modernas. Más lenta que L1/L2 pero mucho más rápida que la RAM.</li>\n</ul>",
     "tip": "Si el dato no está en caché se llama <strong>cache miss</strong> y la CPU va a buscarlo a RAM. Orden de búsqueda: L1 → L2 → L3 → RAM → disco (memoria virtual)."
   },
   {
@@ -706,7 +706,7 @@ const Q = [
     "cat": "eje1",
     "catLabel": "Eje 1",
     "q": "¿Qué es un driver y qué es Plug and Play? ¿Qué relación tienen?",
-    "a": "<strong>Driver (controlador de dispositivo):</strong> programa que actúa como traductor entre el sistema operativo y un periférico específico. El SO habla un lenguaje genérico; el driver lo convierte al lenguaje particular del hardware. Sin el driver correspondiente, el SO no sabe cómo comunicarse con el dispositivo y este no funciona.<br><br>\n<strong>Plug and Play (PnP):</strong> tecnología que permite al SO detectar automáticamente un periférico al conectarlo y configurarlo sin intervención manual. El SO identifica el dispositivo, busca el driver apropiado y lo instala automáticamente.<br><br>\n<strong>Relación entre ambos:</strong> PnP automatiza el proceso de instalación del driver. Sin PnP, el usuario tendría que instalar manualmente el driver cada vez. USB es el estándar PnP por excelencia — conectás y funciona.<br><br>\n<strong>Ejemplo práctico:</strong> cuando conectás un pendrive, Windows lo detecta (PnP), carga el driver de almacenamiento masivo USB (ya incluido en el SO) y el dispositivo aparece disponible en segundos.",
+    "a": "<strong>Driver (controlador de dispositivo):</strong> programa que actúa como <strong>traductor</strong> entre el sistema operativo y un periférico específico. El SO habla un lenguaje genérico; el driver lo convierte al lenguaje particular del hardware. Sin el driver correspondiente, el SO no sabe cómo comunicarse con el dispositivo y este no funciona.<br><br>\n<strong>Plug and Play (PnP):</strong> tecnología que permite al SO <strong>detectar automáticamente</strong> un periférico al conectarlo y configurarlo <strong>sin intervención manual</strong>. El SO identifica el dispositivo, busca el driver apropiado y lo instala automáticamente.<br><br>\n<strong>Relación entre ambos:</strong> PnP automatiza el proceso de instalación del driver. Sin PnP, el usuario tendría que instalar manualmente el driver cada vez. USB es el estándar PnP por excelencia — conectás y funciona.<br><br>\n<strong>Ejemplo práctico:</strong> cuando conectás un pendrive, Windows lo detecta (PnP), carga el driver de <strong>almacenamiento masivo USB</strong> (ya incluido en el SO) y el dispositivo aparece disponible en segundos.",
     "tip": "Distinción importante: PnP detecta y configura automáticamente, pero igual necesita un driver — solo que lo instala solo. Sin driver no hay comunicación posible."
   },
   {
@@ -754,7 +754,7 @@ const Q = [
     "cat": "vn",
     "catLabel": "Von Neumann",
     "q": "¿Cuál es la diferencia entre la UC y la ALU?",
-    "a": "Ambas son componentes de la CPU pero cumplen roles completamente distintos:<br><br>\n<strong>UC (Unidad de Control):</strong> es el \"director\" de la CPU. Sus responsabilidades son:\n<ul>\n<li>Leer instrucciones de la memoria (fase FETCH)</li>\n<li>Decodificarlas para entender qué operación realizar (DECODE)</li>\n<li>Generar las señales de control necesarias para que el resto del sistema ejecute la operación (EXECUTE)</li>\n<li>Coordinar el flujo de datos entre registros, ALU y memoria</li>\n</ul>\n<strong>ALU (Unidad Aritmética Lógica):</strong> es el \"motor de cálculo\". Ejecuta:\n<ul>\n<li>Operaciones <strong>aritméticas:</strong> suma, resta, multiplicación, división</li>\n<li>Operaciones <strong>lógicas:</strong> AND, OR, NOT, XOR, comparaciones</li>\n<li>Opera sobre los datos que le pasa la UC, devuelve el resultado al AC</li>\n</ul>",
+    "a": "Ambas son componentes de la CPU pero cumplen roles completamente distintos:<br><br>\n<strong>UC (Unidad de Control):</strong> es el \"<strong>director</strong>\" de la CPU. Sus responsabilidades son:\n<ul>\n<li>Leer instrucciones de la memoria (fase FETCH)</li>\n<li>Decodificarlas para entender qué operación realizar (DECODE)</li>\n<li>Generar las <strong>señales de control</strong> necesarias para que el resto del sistema ejecute la operación (EXECUTE)</li>\n<li>Coordinar el flujo de datos entre registros, ALU y memoria</li>\n</ul>\n<strong>ALU (Unidad Aritmética Lógica):</strong> es el \"<strong>motor de cálculo</strong>\". Ejecuta:\n<ul>\n<li>Operaciones <strong>aritméticas:</strong> suma, resta, multiplicación, división</li>\n<li>Operaciones <strong>lógicas:</strong> AND, OR, NOT, XOR, comparaciones</li>\n<li>Opera sobre los datos que le pasa la UC, devuelve el resultado al AC</li>\n</ul>",
     "tip": "En resumen: UC decide QUÉ hacer y CUÁNDO hacerlo. ALU lo EJECUTA. La UC nunca calcula; la ALU nunca decide."
   },
   {
@@ -778,7 +778,7 @@ const Q = [
     "cat": "top",
     "catLabel": "Topologías",
     "q": "¿Qué es la topología de Bus?",
-    "a": "En la topología de <strong>Bus</strong>, todos los nodos comparten un único cable central llamado <strong>backbone</strong>. Los datos viajan en ambas direcciones por ese cable y todos los nodos los reciben, pero solo el destinatario los procesa.<br><br>\n<ul>\n<li><strong>Ventaja:</strong> simple, económica y fácil de implementar. Requiere poco cable comparada con otras topologías.</li>\n<li><strong>Desventaja crítica:</strong> si el cable central falla, <strong>toda la red cae</strong>. No hay redundancia. Además, si dos nodos transmiten simultáneamente se produce una <strong>colisión</strong> que corrompe ambos mensajes.</li>\n</ul>\nEsta topología fue muy popular en redes Ethernet antiguas (10BASE-2, coaxial) pero hoy está en desuso, reemplazada por la topología en estrella con switches.",
+    "a": "En la topología de <strong>Bus</strong>, todos los nodos comparten un <strong>único cable central</strong> llamado <strong>backbone</strong>. Los datos viajan en <strong>ambas direcciones</strong> por ese cable y todos los nodos los reciben, pero solo el destinatario los procesa.<br><br>\n<ul>\n<li><strong>Ventaja:</strong> simple, económica y fácil de implementar. Requiere poco cable comparada con otras topologías.</li>\n<li><strong>Desventaja crítica:</strong> si el cable central falla, <strong>toda la red cae</strong>. <strong>No hay redundancia</strong>. Además, si dos nodos transmiten simultáneamente se produce una <strong>colisión</strong> que corrompe ambos mensajes.</li>\n</ul>\nEsta topología fue muy popular en redes Ethernet antiguas (10BASE-2, coaxial) pero hoy está en desuso, reemplazada por la <strong>topología en estrella</strong> con switches.",
     "tip": "La topología Bus y la Estrella son las que más se confunden. Recordá: Bus = cable único compartido. Estrella = hub central con cables individuales a cada nodo."
   },
   {
@@ -786,7 +786,7 @@ const Q = [
     "cat": "top",
     "catLabel": "Topologías",
     "q": "¿Qué es la topología de Malla?",
-    "a": "En la topología de <strong>Malla</strong>, cada nodo se conecta directamente con varios o todos los demás nodos, creando múltiples caminos posibles para cada comunicación.<br><br>\n<strong>Dos variantes:</strong>\n<ul>\n<li><strong>Malla completa (full mesh):</strong> cada nodo está conectado con absolutamente todos los demás. Si hay n nodos, se necesitan n(n-1)/2 enlaces.</li>\n<li><strong>Malla parcial:</strong> cada nodo se conecta con varios pero no todos. Balance entre redundancia y costo.</li>\n</ul>\n<ul>\n<li><strong>Ventaja:</strong> la más tolerante a fallos de todas — si un enlace o nodo cae, los datos pueden llegar por otro camino. Alta redundancia.</li>\n<li><strong>Desventaja:</strong> muy costosa y compleja de implementar, especialmente en la versión completa. Difícil de gestionar.</li>\n</ul>\nSe usa principalmente en redes WAN críticas, backbone de Internet e infraestructuras militares.",
+    "a": "En la topología de <strong>Malla</strong>, cada nodo se conecta directamente con varios o todos los demás nodos, creando <strong>múltiples caminos posibles</strong> para cada comunicación.<br><br>\n<strong>Dos variantes:</strong>\n<ul>\n<li><strong>Malla completa (full mesh):</strong> cada nodo está conectado con absolutamente todos los demás. Si hay n nodos, se necesitan n(n-1)/2 enlaces.</li>\n<li><strong>Malla parcial:</strong> cada nodo se conecta con varios pero no todos. Balance entre redundancia y costo.</li>\n</ul>\n<ul>\n<li><strong>Ventaja:</strong> la más <strong>tolerante a fallos</strong> de todas — si un enlace o nodo cae, los datos pueden llegar por otro camino. <strong>Alta redundancia</strong>.</li>\n<li><strong>Desventaja:</strong> <strong>muy costosa</strong> y compleja de implementar, especialmente en la versión completa. Difícil de gestionar.</li>\n</ul>\nSe usa principalmente en redes WAN críticas, backbone de Internet e infraestructuras militares.",
     "tip": "Recordá: Malla = más redundante. Árbol = más escalable. Son los dos extremos opuestos en términos de costo vs tolerancia a fallos."
   },
   {
@@ -794,7 +794,7 @@ const Q = [
     "cat": "top",
     "catLabel": "Topologías",
     "q": "¿Qué es la topología de Árbol?",
-    "a": "La topología de <strong>Árbol</strong> combina múltiples topologías en estrella organizadas de forma <strong>jerárquica</strong>, formando una estructura que se ramifica como un árbol desde la raíz hacia las hojas.<br><br>\n<strong>Estructura:</strong>\n<ul>\n<li><strong>Nodo raíz:</strong> el hub o switch principal en la cima de la jerarquía</li>\n<li><strong>Nodos intermedios:</strong> hubs o switches que conectan grupos de nodos</li>\n<li><strong>Nodos hoja:</strong> los dispositivos finales (computadoras, impresoras)</li>\n</ul>\n<ul>\n<li><strong>Ventaja:</strong> muy escalable — fácil agregar nuevas ramas sin afectar el resto. Organizada y fácil de administrar por segmentos.</li>\n<li><strong>Desventaja:</strong> si cae un nodo intermedio o la raíz, cae todo lo que depende de él. Alta dependencia de los nodos superiores.</li>\n</ul>",
+    "a": "La topología de <strong>Árbol</strong> combina múltiples topologías en estrella organizadas de forma <strong>jerárquica</strong>, formando una estructura que se ramifica como un árbol desde la raíz hacia las hojas.<br><br>\n<strong>Estructura:</strong>\n<ul>\n<li><strong>Nodo raíz:</strong> el hub o switch principal en la cima de la jerarquía</li>\n<li><strong>Nodos intermedios:</strong> hubs o switches que conectan grupos de nodos</li>\n<li><strong>Nodos hoja:</strong> los dispositivos finales (computadoras, impresoras)</li>\n</ul>\n<ul>\n<li><strong>Ventaja:</strong> <strong>muy escalable</strong> — fácil agregar nuevas ramas sin afectar el resto. Organizada y fácil de administrar por segmentos.</li>\n<li><strong>Desventaja:</strong> si cae un nodo intermedio o la raíz, cae todo lo que depende de él. <strong>Alta dependencia</strong> de los nodos superiores.</li>\n</ul>",
     "tip": "La topología Árbol es básicamente una red de redes en estrella. Se usa mucho en redes empresariales grandes con pisos o edificios separados."
   },
   {
@@ -826,7 +826,7 @@ const Q = [
     "cat": "kar",
     "catLabel": "Karnaugh",
     "q": "¿Cuándo agrupás 1s y cuándo 0s en Karnaugh?",
-    "a": "La elección de qué agrupar depende de qué forma de la función querés obtener:<br><br>\n<ul>\n<li><strong>Agrupás 1s</strong> → obtenés la función en forma de <strong>SOP (Suma de Productos)</strong>: términos AND conectados por OR. También llamada forma canónica de minterms.</li>\n<li><strong>Agrupás 0s</strong> → obtenés la función en forma de <strong>POS (Producto de Sumas)</strong>: términos OR conectados por AND. También llamada forma canónica de maxterms.</li>\n</ul>\n<strong>Reglas generales:</strong>\n<ul>\n<li>Cuanto más grande el grupo → más variables se cancelan → término más simple</li>\n<li>Los grupos pueden solaparse — una celda puede pertenecer a varios grupos</li>\n<li>Se puede usar el <strong>wrap-around</strong>: los bordes opuestos del mapa son adyacentes</li>\n<li>Siempre buscar los grupos más grandes posibles primero</li>\n</ul>",
+    "a": "La elección de qué agrupar depende de qué forma de la función querés obtener:<br><br>\n<ul>\n<li><strong>Agrupás 1s</strong> → obtenés la función en forma de <strong>SOP (Suma de Productos)</strong>: términos AND conectados por OR. También llamada forma canónica de minterms.</li>\n<li><strong>Agrupás 0s</strong> → obtenés la función en forma de <strong>POS (Producto de Sumas)</strong>: términos OR conectados por AND. También llamada forma canónica de maxterms.</li>\n</ul>\n<strong>Reglas generales:</strong>\n<ul>\n<li>Cuanto más grande el grupo → más variables se cancelan → término más simple</li>\n<li>Los grupos pueden <strong>solaparse</strong> — una celda puede pertenecer a varios grupos</li>\n<li>Se puede usar el <strong>wrap-around</strong>: los <strong>bordes opuestos</strong> del mapa son adyacentes</li>\n<li>Siempre buscar los <strong>grupos más grandes</strong> posibles primero</li>\n</ul>",
     "tip": "Resumen: 1s = SOP = Suma de Productos. 0s = POS = Producto de Sumas. Ambas representan la misma función booleana, solo en distinta forma."
   },
   {
@@ -834,7 +834,7 @@ const Q = [
     "cat": "vf",
     "catLabel": "V / F",
     "q": "V/F: \"El componente más importante de la computadora es la placa madre.\"",
-    "a": "<strong style='color:#f87171'>FALSO (F)</strong><br><br>\n<strong>Justificación:</strong> Si bien la placa madre es fundamental porque interconecta todos los componentes, afirmar que es \"el más importante\" de forma aislada es incorrecto. La CPU es el cerebro que ejecuta instrucciones, la RAM es indispensable para el procesamiento en curso, la fuente alimenta todo el sistema. Ningún componente puede considerarse el más importante por sí solo — el sistema no funciona si falta cualquiera de ellos. Todos son interdependientes.",
+    "a": "<strong style='color:#f87171'>FALSO (F)</strong><br><br>\n<strong>Justificación:</strong> Si bien la <strong>placa madre</strong> es fundamental porque interconecta todos los componentes, afirmar que es \"el más importante\" <strong>de forma aislada</strong> es incorrecto. La CPU es <strong>el cerebro</strong> que ejecuta instrucciones, la RAM es indispensable para el procesamiento en curso, la fuente alimenta todo el sistema. Ningún componente puede considerarse el más importante por sí solo — el sistema no funciona si falta cualquiera de ellos. Todos son <strong>interdependientes</strong>.",
     "tip": "La clave de la respuesta es 'de forma aislada' — ningún componente es el más importante porque todos son interdependientes."
   },
   {
@@ -842,21 +842,21 @@ const Q = [
     "cat": "vf",
     "catLabel": "V / F",
     "q": "V/F: \"Los circuitos digitales están formados por un número de compuertas lógicas definidas por su composición interna.\"",
-    "a": "<strong style='color:#34d399'>VERDADERO (V)</strong><br><br>\n<strong>Justificación:</strong> Los circuitos digitales se construyen combinando compuertas lógicas: AND, OR, NOT, NAND, NOR, XOR, XNOR. La cantidad, el tipo y la disposición de esas compuertas — es decir, su <strong>composición interna</strong> — determinan completamente el comportamiento del circuito. Esto aplica tanto a circuitos combinacionales (cuya salida depende solo de las entradas actuales) como a circuitos secuenciales (que tienen memoria de estados anteriores)."
+    "a": "<strong style='color:#34d399'>VERDADERO (V)</strong><br><br>\n<strong>Justificación:</strong> Los circuitos digitales se construyen combinando <strong>compuertas lógicas</strong>: AND, OR, NOT, NAND, NOR, XOR, XNOR. La cantidad, el tipo y la disposición de esas compuertas — es decir, su <strong>composición interna</strong> — determinan completamente el comportamiento del circuito. Esto aplica tanto a <strong>circuitos combinacionales</strong> (cuya salida depende solo de las entradas actuales) como a <strong>circuitos secuenciales</strong> (que tienen memoria de <strong>estados anteriores</strong>)."
   },
   {
     "id": "vf3",
     "cat": "vf",
     "catLabel": "V / F",
     "q": "V/F: \"En el mapa de Karnaugh se puede agrupar término de a 1, 2, 3 y 6 ceros o unos.\"",
-    "a": "<strong style='color:#f87171'>FALSO (F)</strong><br><br>\n<strong>Justificación:</strong> En los mapas de Karnaugh, los agrupamientos deben ser siempre <strong>potencias de 2</strong>: grupos de 1, 2, 4, 8 o 16 celdas. Los grupos de <strong>3 o 6 NO son válidos</strong>. La razón es matemática: solo cuando el grupo es una potencia de 2 se puede aplicar la propiedad booleana A + Ā = 1 para cancelar variables. Un grupo de 3 o 6 no permite esa cancelación y no puede expresarse como un término booleano simplificado."
+    "a": "<strong style='color:#f87171'>FALSO (F)</strong><br><br>\n<strong>Justificación:</strong> En los mapas de Karnaugh, los <strong>agrupamientos</strong> deben ser siempre <strong>potencias de 2</strong>: grupos de 1, 2, 4, 8 o 16 celdas. Los grupos de <strong>3 o 6 NO son válidos</strong>. La razón es matemática: solo cuando el grupo es una potencia de 2 se puede aplicar la <strong>propiedad booleana</strong> A + Ā = 1 para <strong>cancelar variables</strong>. Un grupo de 3 o 6 no permite esa cancelación y no puede expresarse como un <strong>término booleano simplificado</strong>."
   },
   {
     "id": "vf4",
     "cat": "vf",
     "catLabel": "V / F",
     "q": "V/F: \"En la topología de anillo todas las computadoras se conectan a un concentrador.\"",
-    "a": "<strong style='color:#f87171'>FALSO (F)</strong><br><br>\n<strong>Justificación:</strong> Esa descripción corresponde a la <strong>topología en Estrella</strong>, no al Anillo. En la topología de Anillo, cada nodo se conecta directamente al siguiente y al anterior, formando un lazo cerrado. <strong>No existe un concentrador central</strong> — los datos viajan de nodo en nodo en secuencia hasta llegar al destino. Es exactamente esta diferencia la que distingue Estrella de Anillo.",
+    "a": "<strong style='color:#f87171'>FALSO (F)</strong><br><br>\n<strong>Justificación:</strong> Esa descripción corresponde a la <strong>topología en Estrella</strong>, no al <strong>Anillo</strong>. En la topología de Anillo, cada nodo se conecta directamente al siguiente y al anterior, formando un <strong>lazo cerrado</strong>. <strong>No existe un concentrador central</strong> — los datos viajan de <strong>nodo en nodo</strong> en secuencia hasta llegar al destino. Es exactamente esta diferencia la que distingue Estrella de Anillo.",
     "tip": "Este fue el punto exacto donde el profe te cortó el oral anterior. Anillo = sin concentrador. Estrella = con concentrador (hub/switch)."
   },
   {
@@ -864,7 +864,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Cuál es la diferencia entre arquitectura CISC y RISC?",
-    "a": "Son las dos filosofías de diseño de conjuntos de instrucciones más importantes:<br><br><strong>CISC (Complex Instruction Set Computer):</strong><ul><li>Gran cantidad de instrucciones complejas, muchas de las cuales realizan múltiples operaciones</li><li>Una sola instrucción puede acceder a memoria, operar y guardar el resultado</li><li>Instrucciones de longitud variable</li><li>Menos instrucciones en el código fuente, pero cada una tarda más ciclos</li><li>Ejemplo: <strong>Intel x86</strong> (la arquitectura de las PCs actuales)</li></ul><strong>RISC (Reduced Instruction Set Computer):</strong><ul><li>Pocas instrucciones simples, cada una realiza una sola operación</li><li>Las operaciones con memoria son solo LOAD y STORE</li><li>Instrucciones de longitud fija, ejecutadas en 1 ciclo de reloj</li><li>Ejemplos: <strong>ARM</strong> (celulares, tablets), MIPS, PowerPC</li></ul>",
+    "a": "Son las dos filosofías de diseño de conjuntos de instrucciones más importantes:<br><br><strong>CISC (Complex Instruction Set Computer):</strong><ul><li>Gran cantidad de <strong>instrucciones complejas</strong>, muchas de las cuales realizan múltiples operaciones</li><li>Una sola instrucción puede acceder a memoria, operar y guardar el resultado</li><li>Instrucciones de <strong>longitud variable</strong></li><li>Menos instrucciones en el código fuente, pero cada una tarda más ciclos</li><li>Ejemplo: <strong>Intel x86</strong> (la arquitectura de las PCs actuales)</li></ul><strong>RISC (Reduced Instruction Set Computer):</strong><ul><li>Pocas <strong>instrucciones simples</strong>, cada una realiza una sola operación</li><li>Las operaciones con memoria son solo LOAD y STORE</li><li>Instrucciones de <strong>longitud fija</strong>, ejecutadas en 1 ciclo de reloj</li><li>Ejemplos: <strong>ARM</strong> (celulares, tablets), MIPS, PowerPC</li></ul>",
     "tip": "CISC = pocas instrucciones complejas y lentas. RISC = muchas instrucciones simples y rápidas. ARM (tu celular) es RISC. Intel (tu PC) es CISC."
   },
   {
@@ -872,7 +872,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Cuál es la diferencia entre arquitectura Von Neumann y Harvard?",
-    "a": "<strong>Von Neumann:</strong><ul><li>Memoria unificada para instrucciones Y datos</li><li>Bus único compartido — genera el cuello de botella</li><li>Más simple, usada en PCs</li></ul><strong>Harvard:</strong><ul><li>Memorias separadas físicamente: una para instrucciones, otra para datos</li><li>Buses independientes — elimina el cuello de botella</li><li>CPU puede buscar la próxima instrucción mientras procesa datos simultáneamente</li><li>Usada en microcontroladores y DSPs (Arduino, PICs)</li></ul>",
+    "a": "<strong>Von Neumann:</strong><ul><li><strong>Memoria unificada</strong> para instrucciones Y datos</li><li><strong>Bus único compartido</strong> — genera el <strong>cuello de botella</strong></li><li>Más simple, usada en PCs</li></ul><strong>Harvard:</strong><ul><li><strong>Memorias separadas</strong> físicamente: una para instrucciones, otra para datos</li><li><strong>Buses independientes</strong> — elimina el cuello de botella</li><li>CPU puede buscar la próxima instrucción mientras procesa datos simultáneamente</li><li>Usada en <strong>microcontroladores</strong> y DSPs (Arduino, PICs)</li></ul>",
     "tip": "Pregunta que ya salió en el oral: ¿Qué arquitectura soluciona el cuello de botella? → Harvard. Buses SEPARADOS para instrucciones y datos."
   },
   {
@@ -880,7 +880,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Qué es la microarquitectura y qué es la trayectoria de datos (datapath)?",
-    "a": "<strong>Microarquitectura:</strong> implementación interna concreta de una arquitectura de CPU. Define cómo los componentes físicos (ALU, registros, buses internos, UC) están organizados y conectados. Dos CPUs pueden implementar la misma arquitectura (ej: x86) con microarquitecturas distintas y rendimientos diferentes.<br><br><strong>Trayectoria de datos (Datapath):</strong> el camino físico que recorren los datos dentro de la CPU durante la ejecución. Incluye registros (CP, AC, IR, MAR, MBR), la ALU, buses internos y multiplexores. La UC dirige el datapath.",
+    "a": "<strong>Microarquitectura:</strong> <strong>implementación interna</strong> concreta de una arquitectura de CPU. Define cómo los componentes físicos (ALU, registros, <strong>buses internos</strong>, UC) están organizados y conectados. Dos CPUs pueden implementar la misma arquitectura (ej: x86) con microarquitecturas distintas y rendimientos diferentes.<br><br><strong>Trayectoria de datos (Datapath):</strong> el <strong>camino físico</strong> que recorren los datos dentro de la CPU durante la ejecución. Incluye registros (CP, AC, IR, MAR, MBR), la ALU, buses internos y <strong>multiplexores</strong>. La UC dirige el datapath.",
     "tip": "Microarquitectura = el CÓMO está construida la CPU por dentro. Datapath = el CAMINO que siguen los datos. La UC controla el datapath."
   },
   {
@@ -888,7 +888,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿En qué consiste el ciclo Fetch-Decode-Execute?",
-    "a": "<strong>1. FETCH (Búsqueda):</strong><ul><li>MAR ← CP</li><li>MBR ← MEM[MAR]</li><li>IR ← MBR</li><li>CP ← CP + 1</li></ul><strong>2. DECODE (Decodificación):</strong><ul><li>La UC analiza el opcode del IR</li><li>Determina qué operación realizar y qué operandos necesita</li><li>Genera las señales de control necesarias</li></ul><strong>3. EXECUTE (Ejecución):</strong><ul><li>Se realiza la operación (aritmética, lógica, transferencia, salto, E/S)</li><li>Resultado en AC o memoria según la instrucción</li><li>Vuelve al paso 1</li></ul>",
+    "a": "<strong>1. FETCH (Búsqueda):</strong><ul><li><strong>MAR ← CP</strong></li><li>MBR ← MEM[MAR]</li><li><strong>IR ← MBR</strong></li><li>CP ← CP + 1</li></ul><strong>2. DECODE (Decodificación):</strong><ul><li>La UC analiza el <strong>opcode</strong> del IR</li><li>Determina qué operación realizar y qué operandos necesita</li><li>Genera las <strong>señales de control</strong> necesarias</li></ul><strong>3. EXECUTE (Ejecución):</strong><ul><li>Se realiza la operación (aritmética, lógica, transferencia, salto, E/S)</li><li>Resultado en AC o memoria según la instrucción</li><li>Vuelve al paso 1</li></ul>",
     "tip": "Este ciclo es la base de la máquina hipotética del examen. Lo ejecutaste 4 veces: IN → ADD → STORE → OUT."
   },
   {
@@ -896,7 +896,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Qué es el pipeline y cómo mejora el rendimiento?",
-    "a": "Técnica que ejecuta múltiples instrucciones superpuestas en distintas fases simultáneamente.<br><br><strong>Sin pipeline:</strong> 3 instrucciones × 3 fases = 9 ciclos.<br><strong>Con pipeline:</strong> las mismas 3 instrucciones terminan en 5 ciclos — mientras una está en EXECUTE, la siguiente está en DECODE y la siguiente en FETCH.<br><br><strong>Analogía:</strong> línea de ensamblaje de una fábrica.<br><br><strong>Problemas:</strong><ul><li><strong>Hazard de datos:</strong> instrucción necesita resultado de la anterior aún no terminada</li><li><strong>Hazard de control:</strong> saltos condicionales rompen el flujo</li><li><strong>Hazard estructural:</strong> dos instrucciones necesitan el mismo recurso</li></ul>",
+    "a": "Técnica que ejecuta múltiples <strong>instrucciones superpuestas</strong> en distintas fases simultáneamente.<br><br><strong>Sin pipeline:</strong> 3 instrucciones × 3 fases = <strong>9 ciclos</strong>.<br><strong>Con pipeline:</strong> las mismas 3 instrucciones terminan en <strong>5 ciclos</strong> — mientras una está en EXECUTE, la siguiente está en DECODE y la siguiente en FETCH.<br><br><strong>Analogía:</strong> <strong>línea de ensamblaje</strong> de una fábrica.<br><br><strong>Problemas:</strong><ul><li><strong>Hazard de datos:</strong> instrucción necesita resultado de la anterior aún no terminada</li><li><strong>Hazard de control:</strong> saltos condicionales rompen el flujo</li><li><strong>Hazard estructural:</strong> dos instrucciones necesitan el mismo recurso</li></ul>",
     "tip": "Pipeline mejora el throughput (instrucciones por segundo) pero no la latencia de cada instrucción individual."
   },
   {
@@ -904,7 +904,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Qué son los sistemas multiprocesador y cuáles son sus tipos?",
-    "a": "Computadora con dos o más procesadores trabajando coordinadamente.<br><br><strong>Tipos:</strong><ul><li><strong>SMP (Symmetric Multi-Processing):</strong> múltiples procesadores comparten la misma memoria y bus. Es el modelo de las PCs modernas con múltiples núcleos.</li><li><strong>NUMA (Non-Uniform Memory Access):</strong> cada procesador tiene memoria local propia pero puede acceder a la de otros. Usado en servidores grandes.</li><li><strong>Clusters:</strong> múltiples computadoras completas conectadas por red de alta velocidad. Cada nodo tiene su propia memoria y SO. Usado en supercomputadoras.</li></ul>",
+    "a": "Computadora con <strong>dos o más procesadores</strong> trabajando coordinadamente.<br><br><strong>Tipos:</strong><ul><li><strong>SMP (Symmetric Multi-Processing):</strong> múltiples procesadores comparten la <strong>misma memoria y bus</strong>. Es el modelo de las PCs modernas con múltiples núcleos.</li><li><strong>NUMA (Non-Uniform Memory Access):</strong> cada procesador tiene <strong>memoria local propia</strong> pero puede acceder a la de otros. Usado en servidores grandes.</li><li><strong>Clusters:</strong> múltiples computadoras completas conectadas por <strong>red de alta velocidad</strong>. Cada nodo tiene su propia memoria y SO. Usado en <strong>supercomputadoras</strong>.</li></ul>",
     "tip": "SMP = múltiples CPUs, memoria compartida. Cluster = múltiples PCs completas en red. La diferencia clave: comparten memoria física o no."
   },
   {
@@ -912,7 +912,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Cuál es la diferencia entre computación paralela, concurrente y multinúcleo?",
-    "a": "<strong>Paralela:</strong> múltiples tareas ejecutándose literalmente al mismo tiempo en distintos procesadores o núcleos. Requiere hardware múltiple.<br><br><strong>Concurrente:</strong> múltiples tareas progresan en el mismo período pero no necesariamente al mismo instante. Un solo núcleo puede alternar entre tareas dando ilusión de simultaneidad.<br><br><strong>Multinúcleo:</strong> un único chip con múltiples núcleos independientes. Cada núcleo ejecuta un hilo en paralelo real. Es la implementación más común de paralelismo en PCs actuales.",
+    "a": "<strong>Paralela:</strong> múltiples tareas ejecutándose <strong>literalmente al mismo tiempo</strong> en distintos procesadores o núcleos. Requiere hardware múltiple.<br><br><strong>Concurrente:</strong> múltiples tareas progresan en el <strong>mismo período</strong> pero no necesariamente al mismo instante. Un solo núcleo puede alternar entre tareas dando <strong>ilusión de simultaneidad</strong>.<br><br><strong>Multinúcleo:</strong> un único chip con múltiples <strong>núcleos independientes</strong>. Cada núcleo ejecuta un hilo en paralelo real. Es la implementación más común de paralelismo en PCs actuales.",
     "tip": "Paralelo = al mismo tiempo real. Concurrente = parece simultáneo. Multinúcleo = el hardware que hace posible el paralelismo en una sola CPU."
   },
   {
@@ -928,7 +928,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Cuál es la diferencia entre circuitos combinacionales y secuenciales?",
-    "a": "<strong>Combinacionales:</strong><ul><li>Salida depende únicamente de las entradas actuales</li><li>Sin memoria — no recuerdan estados anteriores</li><li>Ejemplos: sumadores, multiplexores, ALU</li></ul><strong>Secuenciales:</strong><ul><li>Salida depende de entradas actuales Y del estado anterior</li><li>Con memoria (flip-flops, latches)</li><li>Ejemplos: registros de la CPU, contadores, RAM</li><li>Los registros CP, AC, IR, MAR, MBR son circuitos secuenciales</li></ul>",
+    "a": "<strong>Combinacionales:</strong><ul><li>Salida depende únicamente de las <strong>entradas actuales</strong></li><li><strong>Sin memoria</strong> — no recuerdan estados anteriores</li><li>Ejemplos: sumadores, multiplexores, ALU</li></ul><strong>Secuenciales:</strong><ul><li>Salida depende de entradas actuales Y del <strong>estado anterior</strong></li><li>Con memoria (<strong>flip-flops</strong>, latches)</li><li>Ejemplos: registros de la CPU, contadores, RAM</li><li>Los registros CP, AC, IR, MAR, MBR son <strong>circuitos secuenciales</strong></li></ul>",
     "tip": "Combinacional = sin memoria. Secuencial = con memoria. Los registros de la CPU son secuenciales."
   },
   {
@@ -936,7 +936,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Cómo se representan los números negativos en binario (Complemento a 2)?",
-    "a": "Para obtener el negativo de un número binario:<ol><li>Invertir todos los bits (complemento a 1)</li><li>Sumar 1 al resultado</li></ol><strong>Ejemplo — representar -5 en 8 bits:</strong><ul><li>5 = 00000101</li><li>Invertir: 11111010</li><li>Sumar 1: 11111011 → este es -5</li></ul><strong>Ventajas:</strong><ul><li>Una sola representación del cero</li><li>Suma positivos y negativos con el mismo circuito</li><li>MSB indica signo: 0 = positivo, 1 = negativo</li></ul>",
+    "a": "Para obtener el negativo de un número binario:<ol><li><strong>Invertir todos los bits</strong> (complemento a 1)</li><li><strong>Sumar 1</strong> al resultado</li></ol><strong>Ejemplo — representar -5 en 8 bits:</strong><ul><li>5 = 00000101</li><li>Invertir: 11111010</li><li>Sumar 1: 11111011 → este es -5</li></ul><strong>Ventajas:</strong><ul><li><strong>Una sola representación</strong> del cero</li><li>Suma positivos y negativos con el <strong>mismo circuito</strong></li><li>MSB indica signo: 0 = positivo, 1 = negativo</li></ul>",
     "tip": "Complemento a 2 = invertir bits + sumar 1. Estándar en todas las CPUs modernas."
   },
   {
@@ -944,7 +944,7 @@ const Q = [
     "cat": "eje2",
     "catLabel": "Eje 2",
     "q": "¿Qué es la codificación de información y cuáles son los estándares más importantes?",
-    "a": "Proceso de convertir datos del mundo real en representaciones binarias.<br><br><ul><li><strong>ASCII:</strong> 128 caracteres en 7 bits. Letras inglesas, dígitos, puntuación. Primer estándar universal.</li><li><strong>Unicode/UTF-8:</strong> más de 1.1 millones de caracteres, todos los idiomas y emojis. Compatible con ASCII para los primeros 128 caracteres.</li><li><strong>BCD:</strong> cada dígito decimal codificado en 4 bits. Útil en aplicaciones financieras.</li><li><strong>IEEE 754:</strong> números de punto flotante en 32 o 64 bits. Divide en signo, exponente y mantisa. Es el float/double de la programación.</li></ul>",
+    "a": "Proceso de convertir datos del mundo real en representaciones binarias.<br><br><ul><li><strong>ASCII:</strong> <strong>128 caracteres</strong> en <strong>7 bits</strong>. Letras inglesas, dígitos, puntuación. Primer estándar universal.</li><li><strong>Unicode/UTF-8:</strong> más de 1.1 millones de caracteres, todos los idiomas y emojis. Compatible con ASCII para los primeros 128 caracteres.</li><li><strong>BCD:</strong> cada dígito decimal codificado en 4 bits. Útil en aplicaciones financieras.</li><li><strong>IEEE 754:</strong> números de <strong>punto flotante</strong> en 32 o 64 bits. Divide en signo, exponente y <strong>mantisa</strong>. Es el float/double de la programación.</li></ul>",
     "tip": "ASCII = inglés básico (7 bits). UTF-8 = todo el mundo. IEEE 754 = decimales (float/double)."
   },
   {
@@ -952,7 +952,7 @@ const Q = [
     "cat": "eje3",
     "catLabel": "Eje 3",
     "q": "¿Cuáles son los orígenes y la evolución de Internet?",
-    "a": "Internet nació como un proyecto militar/académico y evolucionó hasta convertirse en la red global que conocemos hoy:<br><br><ul><li><strong>ARPANET (1969):</strong> primera red de computadoras, creada por DARPA. Conectaba solo 4 universidades. Diseñada para sobrevivir ataques nucleares mediante enrutamiento descentralizado.</li><li><strong>Protocolos TCP/IP (1974):</strong> Vint Cerf y Bob Kahn desarrollan TCP/IP, el lenguaje común que permite que distintas redes se interconecten.</li><li><strong>DNS (1984):</strong> Sistema de Nombres de Dominio. Traduce nombres legibles (google.com) a direcciones IP numéricas.</li><li><strong>World Wide Web (1991):</strong> Tim Berners-Lee inventa la WWW en el CERN. Internet existía antes; la WWW es una aplicación que corre sobre Internet.</li><li><strong>Era móvil (2000s-presente):</strong> smartphones, WiFi, 4G/5G democratizan el acceso.</li></ul>",
+    "a": "Internet nació como un proyecto militar/académico y evolucionó hasta convertirse en la red global que conocemos hoy:<br><br><ul><li><strong>ARPANET (1969):</strong> primera red de computadoras, creada por <strong>DARPA</strong>. Conectaba solo 4 universidades. Diseñada para sobrevivir ataques nucleares mediante enrutamiento descentralizado.</li><li><strong>Protocolos TCP/IP (1974):</strong> <strong>Vint Cerf</strong> y Bob Kahn desarrollan TCP/IP, el lenguaje común que permite que distintas redes se interconecten.</li><li><strong>DNS (1984):</strong> Sistema de Nombres de Dominio. Traduce nombres legibles (google.com) a direcciones IP numéricas.</li><li><strong>World Wide Web (1991):</strong> <strong>Tim Berners-Lee</strong> inventa la WWW en el CERN. Internet existía antes; la WWW es una aplicación que corre sobre Internet.</li><li><strong>Era móvil (2000s-presente):</strong> smartphones, WiFi, 4G/5G democratizan el acceso.</li></ul>",
     "tip": "Distinción clave: Internet es la infraestructura de red. La WWW es una aplicación (páginas web) que corre sobre ella. Correo, FTP, videollamadas también son Internet pero no WWW."
   },
   {
@@ -960,7 +960,7 @@ const Q = [
     "cat": "eje3",
     "catLabel": "Eje 3",
     "q": "¿Qué es la arquitectura de red y cuáles son sus componentes principales?",
-    "a": "Define la estructura y organización de una red — cómo están dispuestos y conectados sus componentes.<br><br><strong>Componentes:</strong><ul><li><strong>Nodos:</strong> cualquier dispositivo conectado — PCs, servidores, celulares.</li><li><strong>Medios de transmisión:</strong> UTP, fibra óptica, coaxial, WiFi, Bluetooth, 4G/5G.</li><li><strong>Dispositivos de interconexión:</strong> Hub (reenvía a todos), Switch (reenvía al destino correcto), Router (conecta redes distintas), Modem (convierte señal analógica a digital).</li><li><strong>Protocolos:</strong> reglas de comunicación — TCP/IP, HTTP, FTP, DNS.</li><li><strong>Topología:</strong> organización física o lógica (bus, estrella, anillo, malla).</li></ul>",
+    "a": "Define la estructura y organización de una red — cómo están dispuestos y conectados sus componentes.<br><br><strong>Componentes:</strong><ul><li><strong>Nodos:</strong> cualquier dispositivo conectado — PCs, servidores, celulares.</li><li><strong>Medios de transmisión:</strong> UTP, fibra óptica, coaxial, WiFi, Bluetooth, 4G/5G.</li><li><strong>Dispositivos de interconexión:</strong> Hub (<strong>reenvía a todos</strong>), Switch (<strong>reenvía al destino correcto</strong>), Router (<strong>conecta redes distintas</strong>), Modem (convierte señal analógica a digital).</li><li><strong>Protocolos:</strong> reglas de comunicación — TCP/IP, HTTP, FTP, DNS.</li><li><strong>Topología:</strong> organización física o lógica (bus, estrella, anillo, malla).</li></ul>",
     "tip": "Hub reenvía a todos (sin inteligencia). Switch reenvía solo al destinatario. Router conecta redes distintas. Esas tres distinciones son las que más pregunta el profe."
   },
   {
@@ -968,7 +968,7 @@ const Q = [
     "cat": "eje3",
     "catLabel": "Eje 3",
     "q": "¿Qué es la computación distribuida y cuáles son sus características?",
-    "a": "Modelo en el que múltiples computadoras independientes conectadas en red trabajan coordinadamente, apareciendo ante el usuario como un sistema único.<br><br><strong>Características:</strong><ul><li><strong>Transparencia:</strong> el usuario no percibe la distribución</li><li><strong>Escalabilidad:</strong> se agregan nodos para aumentar capacidad</li><li><strong>Tolerancia a fallos:</strong> si un nodo falla, los demás continúan</li><li><strong>Concurrencia:</strong> múltiples nodos procesan simultáneamente</li><li><strong>Heterogeneidad:</strong> nodos con distinto hardware y SO</li></ul><strong>Ejemplos:</strong> Google Search, Netflix, blockchain, sistemas bancarios.",
+    "a": "Modelo en el que múltiples computadoras independientes conectadas en red trabajan coordinadamente, apareciendo ante el usuario como un <strong>sistema único</strong>.<br><br><strong>Características:</strong><ul><li><strong>Transparencia:</strong> el usuario no percibe la distribución</li><li><strong>Escalabilidad:</strong> se agregan nodos para aumentar capacidad</li><li><strong>Tolerancia a fallos:</strong> si un nodo falla, los demás continúan</li><li><strong>Concurrencia:</strong> múltiples nodos procesan simultáneamente</li><li><strong>Heterogeneidad:</strong> nodos con distinto hardware y SO</li></ul><strong>Ejemplos:</strong> Google Search, Netflix, blockchain, sistemas bancarios.",
     "tip": "Clave: parece un sistema único pero son múltiples máquinas. Diferencia con multiprocesador: los nodos distribuidos están en distintas máquinas en red, no comparten memoria física."
   },
   {
@@ -976,7 +976,7 @@ const Q = [
     "cat": "eje3",
     "catLabel": "Eje 3",
     "q": "¿En qué consiste el paradigma Cliente/Servidor?",
-    "a": "Divide los roles en dos partes fijas:<br><br><strong>Servidor:</strong><ul><li>Provee servicios o recursos</li><li>Siempre activo, esperando solicitudes</li><li>Dirección fija y conocida (IP/dominio)</li><li>Atiende múltiples clientes simultáneamente</li><li>Ejemplos: servidor web (Apache, Nginx), servidor de BD, servidor de correo</li></ul><strong>Cliente:</strong><ul><li>Solicita servicios — siempre inicia la comunicación</li><li>Puede conectarse y desconectarse libremente</li><li>Ejemplos: navegador, app de correo, cliente FTP</li></ul><strong>Ventaja:</strong> control centralizado, fácil gestión.<br><strong>Desventaja:</strong> servidor = punto único de fallo.",
+    "a": "Divide los roles en dos partes fijas:<br><br><strong>Servidor:</strong><ul><li>Provee servicios o recursos</li><li><strong>Siempre activo</strong>, esperando solicitudes</li><li><strong>Dirección fija</strong> y conocida (IP/dominio)</li><li>Atiende múltiples clientes simultáneamente</li><li>Ejemplos: servidor web (Apache, Nginx), servidor de BD, servidor de correo</li></ul><strong>Cliente:</strong><ul><li>Solicita servicios — siempre <strong>inicia la comunicación</strong></li><li>Puede conectarse y desconectarse libremente</li><li>Ejemplos: navegador, app de correo, cliente FTP</li></ul><strong>Ventaja:</strong> <strong>control centralizado</strong>, fácil gestión.<br><strong>Desventaja:</strong> servidor = <strong>punto único de fallo</strong>.",
     "tip": "HTTP es el ejemplo más claro: tu navegador (cliente) pide una página, el servidor web la devuelve. El cliente SIEMPRE inicia."
   },
   {
@@ -984,7 +984,7 @@ const Q = [
     "cat": "eje3",
     "catLabel": "Eje 3",
     "q": "¿Qué es el modelo Peer to Peer (P2P) y en qué se diferencia del Cliente/Servidor?",
-    "a": "Cada nodo (peer) actúa como cliente Y servidor simultáneamente — no hay roles fijos.<br><br><strong>Características P2P:</strong><ul><li>Sin servidor central — recursos distribuidos entre todos</li><li>Altamente tolerante a fallos</li><li>Escala naturalmente: más usuarios = más recursos</li></ul><strong>Comparación:</strong><ul><li>C/S: roles fijos. P2P: intercambiables.</li><li>C/S: centralizado. P2P: descentralizado.</li><li>C/S: punto único de fallo. P2P: muy tolerante.</li><li>C/S: fácil de controlar. P2P: difícil de controlar.</li></ul><strong>Ejemplos:</strong> BitTorrent, blockchain/Bitcoin, VoIP.",
+    "a": "Cada nodo (peer) actúa como <strong>cliente Y servidor</strong> simultáneamente — no hay <strong>roles fijos</strong>.<br><br><strong>Características P2P:</strong><ul><li><strong>Sin servidor central</strong> — recursos distribuidos entre todos</li><li>Altamente <strong>tolerante a fallos</strong></li><li><strong>Escala naturalmente</strong>: más usuarios = más recursos</li></ul><strong>Comparación:</strong><ul><li>C/S: roles fijos. P2P: intercambiables.</li><li>C/S: centralizado. P2P: <strong>descentralizado</strong>.</li><li>C/S: <strong>punto único de fallo</strong>. P2P: muy tolerante.</li><li>C/S: fácil de controlar. P2P: difícil de controlar.</li></ul><strong>Ejemplos:</strong> BitTorrent, blockchain/Bitcoin, VoIP.",
     "tip": "BitTorrent: cuando descargás un archivo, al mismo tiempo lo compartís con otros. Cada usuario es cliente Y servidor."
   },
   {
@@ -992,7 +992,7 @@ const Q = [
     "cat": "eje3",
     "catLabel": "Eje 3",
     "q": "¿Qué es la computación centrada en redes (Network-Centric Computing)?",
-    "a": "Paradigma donde la red es el elemento central — el procesamiento, almacenamiento y aplicaciones residen en la red, no en el dispositivo local.<br><br><strong>Principio:</strong> 'La red es la computadora' (Sun Microsystems, 1984).<br><br><strong>Características:</strong><ul><li>Aplicaciones en servidores remotos</li><li>Datos en la nube (cloud storage)</li><li>El dispositivo solo necesita conectividad y un navegador</li><li>Actualizaciones centralizadas</li></ul><strong>Evolución:</strong> derivó en el Cloud Computing actual — AWS, Google Cloud, Azure, Google Docs, Netflix.",
+    "a": "Paradigma donde la red es el elemento central — el procesamiento, almacenamiento y aplicaciones residen en la red, no en el dispositivo local.<br><br><strong>Principio:</strong> '<strong>La red es la computadora</strong>' (<strong>Sun Microsystems</strong>, 1984).<br><br><strong>Características:</strong><ul><li>Aplicaciones en <strong>servidores remotos</strong></li><li><strong>Datos en la nube</strong> (cloud storage)</li><li>El dispositivo solo necesita conectividad y un navegador</li><li><strong>Actualizaciones centralizadas</strong></li></ul><strong>Evolución:</strong> derivó en el <strong>Cloud Computing</strong> actual — AWS, Google Cloud, Azure, Google Docs, Netflix.",
     "tip": "Lo vivís todos los días: Google Docs procesa en servidores de Google. Netflix está en servidores, no en tu celu. Eso es computación centrada en redes."
   },
   {
@@ -1000,7 +1000,7 @@ const Q = [
     "cat": "eje3",
     "catLabel": "Eje 3",
     "q": "¿Qué es la computación móvil y cuáles son sus características?",
-    "a": "Permite acceder a recursos y servicios de red desde dispositivos portátiles mientras el usuario se desplaza.<br><br><strong>Características:</strong><ul><li><strong>Movilidad:</strong> se mueve sin perder conectividad</li><li><strong>Portabilidad:</strong> smartphones, tablets, laptops</li><li><strong>Conectividad inalámbrica:</strong> WiFi, Bluetooth, 4G/5G</li><li><strong>Recursos limitados:</strong> batería, procesamiento y almacenamiento más acotados que una PC</li><li><strong>Handover:</strong> cambio entre celdas de red sin interrumpir la conexión</li></ul><strong>Tecnologías:</strong> WiFi (802.11), Bluetooth, 4G/5G, GPS.",
+    "a": "Permite acceder a recursos y servicios de red desde <strong>dispositivos portátiles</strong> mientras el usuario se desplaza.<br><br><strong>Características:</strong><ul><li><strong>Movilidad:</strong> se mueve <strong>sin perder conectividad</strong></li><li><strong>Portabilidad:</strong> smartphones, tablets, laptops</li><li><strong>Conectividad inalámbrica:</strong> WiFi, Bluetooth, 4G/5G</li><li><strong>Recursos limitados:</strong> batería, procesamiento y almacenamiento más acotados que una PC</li><li><strong>Handover:</strong> cambio entre celdas de red sin interrumpir la conexión</li></ul><strong>Tecnologías:</strong> WiFi (802.11), Bluetooth, 4G/5G, GPS.",
     "tip": "Handover: cuando vas en colectivo y tu celu cambia de antena sin que se corte la llamada — eso es handover automático entre celdas."
   },
   {
@@ -1008,7 +1008,7 @@ const Q = [
     "cat": "eje4",
     "catLabel": "Eje 4",
     "q": "¿Cuáles son los tipos de redes según su cobertura geográfica?",
-    "a": "Las redes se clasifican según el área física que abarcan:<ul>\n<li><strong>PAN (Personal Area Network):</strong> alcance de pocos metros, entorno personal. Bluetooth conectando auriculares al celu, conexión USB. Rango: ~10 metros.</li>\n<li><strong>LAN (Local Area Network):</strong> red de área local. Un edificio, oficina o campus. Alta velocidad, baja latencia, administrada por una organización. Ejemplos: red de una empresa, red doméstica con WiFi.</li>\n<li><strong>MAN (Metropolitan Area Network):</strong> área metropolitana, una ciudad. Conecta múltiples LANs dentro de una zona geográfica. Ejemplos: red de una universidad con múltiples campus, red de cámaras de una ciudad.</li>\n<li><strong>WAN (Wide Area Network):</strong> área amplia, países o continentes. Baja velocidad relativa, alta latencia. Usa infraestructura de telecomunicaciones (fibra, satélite). El ejemplo más grande: <strong>Internet</strong>.</li>\n</ul>",
+    "a": "Las redes se clasifican según el área física que abarcan:<ul>\n<li><strong>PAN (Personal Area Network):</strong> alcance de <strong>pocos metros</strong>, entorno personal. Bluetooth conectando auriculares al celu, conexión USB. Rango: ~10 metros.</li>\n<li><strong>LAN (Local Area Network):</strong> red de área local. Un edificio, oficina o campus. Alta velocidad, baja latencia, administrada por una organización. Ejemplos: red de una empresa, red doméstica con WiFi.</li>\n<li><strong>MAN (Metropolitan Area Network):</strong> área metropolitana, <strong>una ciudad</strong>. Conecta múltiples LANs dentro de una zona geográfica. Ejemplos: red de una universidad con múltiples campus, red de cámaras de una ciudad.</li>\n<li><strong>WAN (Wide Area Network):</strong> área amplia, <strong>países o continentes</strong>. Baja velocidad relativa, alta latencia. Usa infraestructura de telecomunicaciones (fibra, satélite). El ejemplo más grande: <strong>Internet</strong>.</li>\n</ul>",
     "tip": "PAN → personal (metros). LAN → local (edificio). MAN → metropolitana (ciudad). WAN → amplia (países). Internet es la WAN más grande del mundo."
   },
   {
@@ -1032,7 +1032,7 @@ const Q = [
     "cat": "eje4",
     "catLabel": "Eje 4",
     "q": "¿Qué es la máscara de red y para qué sirve?",
-    "a": "La <strong>máscara de red (subnet mask)</strong> es un número de 32 bits que determina qué parte de una dirección IP identifica la red y qué parte identifica el host (dispositivo) dentro de esa red.<br><br>\n<strong>Funcionamiento:</strong>\n<ul>\n<li>Se aplica una operación AND bit a bit entre la IP y la máscara</li>\n<li>Los bits en 1 de la máscara corresponden a la parte de red</li>\n<li>Los bits en 0 corresponden a la parte de host</li>\n</ul>\n<strong>Ejemplos comunes:</strong>\n<ul>\n<li><strong>255.255.255.0 (/24):</strong> los primeros 3 octetos = red, el último = host. Hasta 254 hosts.</li>\n<li><strong>255.255.0.0 (/16):</strong> los primeros 2 octetos = red. Hasta 65.534 hosts.</li>\n<li><strong>255.0.0.0 (/8):</strong> solo el primer octeto = red. Hasta 16 millones de hosts.</li>\n</ul>\n<strong>Ejemplo práctico:</strong> IP 192.168.1.100 con máscara 255.255.255.0 → red: 192.168.1.0, host: 100. Solo puede comunicarse directamente con dispositivos en 192.168.1.x.",
+    "a": "La <strong>máscara de red (subnet mask)</strong> es un número de <strong>32 bits</strong> que determina qué parte de una dirección IP identifica la red y qué parte identifica el host (dispositivo) dentro de esa red.<br><br>\n<strong>Funcionamiento:</strong>\n<ul>\n<li>Se aplica una operación <strong>AND bit a bit</strong> entre la IP y la máscara</li>\n<li>Los bits en 1 de la máscara corresponden a la <strong>parte de red</strong></li>\n<li>Los bits en 0 corresponden a la parte de host</li>\n</ul>\n<strong>Ejemplos comunes:</strong>\n<ul>\n<li><strong>255.255.255.0 (/24):</strong> los primeros 3 octetos = red, el último = host. Hasta <strong>254 hosts</strong>.</li>\n<li><strong>255.255.0.0 (/16):</strong> los primeros 2 octetos = red. Hasta 65.534 hosts.</li>\n<li><strong>255.0.0.0 (/8):</strong> solo el primer octeto = red. Hasta 16 millones de hosts.</li>\n</ul>\n<strong>Ejemplo práctico:</strong> IP 192.168.1.100 con máscara 255.255.255.0 → red: 192.168.1.0, host: 100. Solo puede comunicarse directamente con dispositivos en 192.168.1.x.",
     "tip": "La máscara define los límites de la red. Si dos dispositivos tienen distinta red (según la máscara), necesitan un router para comunicarse."
   },
   {
@@ -2749,17 +2749,26 @@ function retryWk(){document.getElementById('qz-res').classList.add('hide');start
 function exitQz(){clearInterval(qTmr);document.getElementById('qz-run').classList.add('hide');document.getElementById('qz-set').classList.remove('hide');}
 function backQz(){document.getElementById('qz-res').classList.add('hide');document.getElementById('qz-set').classList.remove('hide');}
 
-// ── PALABRAS CLAVE (modo oral: respuesta escrita) ──
-// Extrae conceptos clave del campo "a" de una pregunta de Q y los busca en lo que escribió el usuario.
-// JavaScript puro: normalización de texto (minúsculas, sin acentos), sin IA ni librerías.
-var KW_MIN=3, KW_MAX=8;
-var KW_SKIP={};
-'tambien cuando porque siguiente mediante durante despues siempre dentro traves pueden tienen siendo ejemplo ejemplos'.split(' ').forEach(function(w){KW_SKIP[w]=1;});
+// ── CONCEPTOS CLAVE (modo oral: respuesta escrita) ──
+// Los conceptos son las frases cortas que van en <strong> dentro del campo "a" de cada pregunta de Q.
+// Se buscan en lo que escribió el usuario sin importar mayúsculas ni acentos, aceptando que las
+// palabras de la frase aparezcan separadas (hasta KW_GAP palabras de más) y sinónimos básicos.
+// JavaScript puro, sin IA ni librerías.
+var KW_MIN=3, KW_MAX=8, KW_GAP=5;
 var KW_SMALL={};
 'de del la las el los un una unos unas al en y o a con por para que se su sus es'.split(' ').forEach(function(w){KW_SMALL[w]=1;});
 // títulos de sección que van en <strong> pero no son conceptos de la respuesta
-var KW_HEAD=/^(ventajas?|desventajas?|ejemplos?|caracteristicas|funciones? principales?|tipos|problemas|analogia|estructura|comparacion|funcionamiento|propiedades|reglas generales|sus niveles|por funcion|por conexion|principales organismos|estandares mas importantes|conceptos clave|capas de defensa|tecnologias|componentes|elementos principales|relacion entre ambos|limitacion conocida|dos variantes|ataques de red|evolucion|principio|unidades de medida|representacion segun|conversion|sin pipeline|con pipeline|justificacion|el patron|como funciona|que es)(?![a-z0-9])/;
-var kwDf=null;
+var KW_HEAD=/^(ventajas?|desventajas?|ejemplos?|caracteristicas|funcion(es)? principal(es)?|tecnicas principales|es el|tipos|problemas|analogia|estructura|comparacion|funcionamiento|propiedades|reglas generales|sus niveles|por funcion|por conexion|principales organismos|estandares mas importantes|conceptos clave|capas de defensa|tecnologias|componentes|elementos principales|relacion entre ambos|limitacion conocida|dos variantes|ataques de red|evolucion|principio|unidades de medida|representacion segun|conversion|sin pipeline|con pipeline|justificacion|el patron|como funciona|que es)(?![a-z0-9])/;
+// sinónimos básicos: cada regla lleva a una misma forma canónica
+var KW_SYN=[
+  [/^(extremadamente|altamente|muy)$/,'muy'],
+  [/^distribu/,'distribu'],
+  [/^(nodo|dispositivo|equipo)s?$/,'nodo'],
+  [/^(central|centrales|centralizad[oa]s?|centralizacion)$/,'central'],
+  [/^(computador[a]?|ordenador|pc)(es|s)?$/,'computador'],
+  [/^fall[oa]s?$/,'fallo'],
+  [/^(sin|no)$/,'sin']
+];
 
 // minúsculas y sin acentos, conservando la longitud (para poder mapear posiciones al texto original)
 function kwNorm(s){
@@ -2770,113 +2779,82 @@ function kwNorm(s){
 function kwWords(s){return kwNorm(s).split(/[^a-z0-9]+/).filter(Boolean);}
 function kwPlain(html){return html.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();}
 function kwEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function kwDfInit(){
-  kwDf={};
-  Q.forEach(function(q){
-    var seen={};
-    kwWords(kwPlain(q.a)).forEach(function(w){if(!seen[w]){seen[w]=1;kwDf[w]=(kwDf[w]||0)+1;}});
-  });
-}
 // tokens de una frase: sin conectores ni dígitos sueltos
 function kwToks(phrase){
   return kwWords(phrase).filter(function(w){return !KW_SMALL[w]&&w.length>1;});
 }
-// palabras con su forma original (para mostrarlas con acentos)
-function kwWordsO(s){
-  var o=[];
-  s.split(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]+/).forEach(function(w){if(w)o.push({o:w,n:kwNorm(w)});});
-  return o;
+// forma canónica de una palabra: sinónimos y plural simple
+function kwCanon(w){
+  for(var i=0;i<KW_SYN.length;i++)if(KW_SYN[i][0].test(w))return KW_SYN[i][1];
+  if(w.length>7&&/mente$/.test(w))return w.slice(0,-5);
+  if(w.length>4&&/es$/.test(w))return w.slice(0,-2);
+  if(w.length>3&&/s$/.test(w))return w.slice(0,-1);
+  return w;
+}
+function kwSame(c,u){
+  if(c===u)return true;
+  if(/^\d+$/.test(c)||c.length<5||u.length<5)return false;
+  return u.indexOf(c)===0||(c.indexOf(u)===0&&c.length-u.length<=3);
 }
 
-// → [{label, alts:[[tokens]], needles:[{s,ext}]}]
+// → [{label, alts:[[tokens]], needles:[{s}]}]
 function extractKW(q){
-  if(!kwDf)kwDfInit();
-  var out=[],keys={},covered={};
-  function mark(toks){toks.forEach(function(t){covered[t]=1;});}
+  var out=[],keys={};
   function push(c){
     var k=kwNorm(c.label);
     if(keys[k]||out.length>=KW_MAX)return false;
     keys[k]=1;out.push(c);return true;
   }
-  var text=kwPlain(q.a);
-
-  // 1) términos en <strong>
-  var re=/<strong>([\s\S]*?)<\/strong>/g,m;
+  var text=kwPlain(q.a),m;
+  // 1) frases cortas en <strong>
+  var re=/<strong[^>]*>([\s\S]*?)<\/strong>/g;
   while((m=re.exec(q.a))){
     var t=kwPlain(m[1]).replace(/[\s:;,.]+$/,'').replace(/^\d+\.\s+/,'').trim();
-    if(t.length<2||t.length>60||/\?/.test(t)||t.split(' ').length>6)continue;
-    if(KW_HEAD.test(kwNorm(t)))continue;
+    if(t.length<2||t.length>60||/\?/.test(t)||KW_HEAD.test(kwNorm(t)))continue;
     var pm=t.match(/^(.*?)\s*\(([^)]*)\)\s*(.*)$/);
     var main=pm?(pm[1]+' '+pm[3]).trim():t, par=pm?pm[2].trim():'';
     if(!main){main=par;par='';}
     var alts=[kwToks(main)];
-    if(!alts[0].length)continue;
-    if(par){var pt=kwToks(par);if(pt.length)alts.push(pt);}
+    if(!alts[0].length||alts[0].length>4)continue;
+    if(par){var pt=kwToks(par);if(pt.length&&pt.length<=4)alts.push(pt);}
     // texto a resaltar: cada pedazo tal como aparece en la respuesta
     var pieces=pm?[pm[1],pm[2],pm[3].replace(/^[\s—–-]+/,'')]:[t];
     var needles=[];
     pieces.forEach(function(x){
       x=x.trim();
-      if(x.length>=2)needles.push({s:kwNorm(x).replace(/\s+/g,' '),ext:false});
+      if(x.length>=2)needles.push({s:kwNorm(x).replace(/\s+/g,' ')});
     });
-    if(push({label:t,alts:alts,needles:needles}))alts.forEach(mark);
+    push({label:t,alts:alts,needles:needles});
   }
-  // 2) siglas (2+ mayúsculas seguidas)
-  var are=/(^|[^A-Za-zÁÉÍÓÚÑáéíóúñ0-9])([A-ZÁÉÍÓÚÑ]{2,})(?![A-Za-zÁÉÍÓÚÑáéíóúñ0-9])/g;
-  while((m=are.exec(text))){
-    var a=kwNorm(m[2]);
-    if(covered[a])continue;
-    if(push({label:m[2],alts:[[a]],needles:[{s:a,ext:false,exact:true}]}))covered[a]=1;
+  // respaldo (si la respuesta tiene menos de KW_MIN frases): siglas y cifras
+  if(out.length<KW_MIN){
+    var fb=/(^|[^A-Za-zÁÉÍÓÚÑáéíóúñ0-9])([A-ZÁÉÍÓÚÑ]{2,}|\d{2,})(?![A-Za-zÁÉÍÓÚÑáéíóúñ0-9])/g;
+    while((m=fb.exec(text))){
+      if(out.length>=KW_MIN)break;
+      push({label:m[2],alts:[[kwNorm(m[2])]],needles:[{s:kwNorm(m[2]),exact:true}]});
+    }
   }
-  // 3) números y años
-  var nre=/(^|[^A-Za-zÁÉÍÓÚÑáéíóúñ0-9])(\d{2,})(?![A-Za-zÁÉÍÓÚÑáéíóúñ0-9])/g;
-  while((m=nre.exec(text))){
-    if(covered[m[2]])continue;
-    if(push({label:m[2],alts:[[m[2]]],needles:[{s:m[2],ext:false,exact:true}]}))covered[m[2]]=1;
-  }
-  // 4) palabras largas (>6 letras), las menos comunes en todo Q primero
-  function words(min){
-    var seen={},list=[];
-    kwWordsO(text).forEach(function(x,i){
-      var w=x.n;
-      if(w.length<min||/\d/.test(w)||KW_SKIP[w]||covered[w]||seen[w]||KW_SMALL[w])return;
-      seen[w]=1;list.push({w:w,o:x.o.toLowerCase()===x.o?x.o:x.o.charAt(0)+x.o.slice(1).toLowerCase(),i:i});
-    });
-    list.sort(function(x,y){return (kwDf[x.w]||0)-(kwDf[y.w]||0)||x.i-y.i;});
-    return list;
-  }
-  function addWords(list,upTo){
-    list.forEach(function(x){
-      if(out.length>=upTo)return;
-      if(push({label:x.o,alts:[[x.w]],needles:[{s:x.w,ext:true}]}))covered[x.w]=1;
-    });
-  }
-  addWords(words(7),KW_MAX);
-  // respaldo: si quedaron menos de KW_MIN, se agregan palabras de 5-6 letras
-  if(out.length<KW_MIN)addWords(words(5),KW_MIN);
   return out;
 }
 
-function kwTokHit(t,ut){
-  if(t.length<=3||/^\d+$/.test(t))return !!ut.set[t];
-  return ut.arr.some(function(u){
-    return u.indexOf(t)===0||(u.length>=5&&t.indexOf(u)===0&&t.length-u.length<=3);
-  });
-}
-function kwHit(c,ut){
-  return c.alts.some(function(toks){
-    var n=toks.length,need=n<=2?n:Math.ceil(n*0.6),got=0;
-    toks.forEach(function(t){if(kwTokHit(t,ut))got++;});
-    return got>=need;
-  });
+// ¿Aparecen las palabras de la frase (o sus equivalentes) dentro de una ventana de n+KW_GAP palabras?
+// Frases de 4 palabras toleran que falte una; las más cortas deben estar completas.
+function kwWindow(toks,uc){
+  var n=toks.length,cc=toks.map(kwCanon),span=n+KW_GAP,need=n>=4?n-1:n;
+  var hit=function(w,k){return w.some(function(u){return kwSame(cc[k],u);});};
+  if(n===1)return hit(uc,0);
+  for(var i=0;i<uc.length;i++){
+    var win=uc.slice(i,i+span),got=0;
+    for(var k=0;k<n;k++)if(hit(win,k))got++;
+    if(got>=need)return true;
+  }
+  return false;
 }
 // → {kws:[{label,found,needles}], found, total}
 function checkWritten(q,userText){
-  var arr=kwWords(userText),set={};
-  arr.forEach(function(w){set[w]=1;});
-  var ut={arr:arr,set:set},found=0;
+  var uc=kwWords(userText).map(kwCanon),found=0;
   var kws=extractKW(q).map(function(c){
-    var f=kwHit(c,ut);
+    var f=c.alts.some(function(toks){return kwWindow(toks,uc);});
     if(f)found++;
     return {label:c.label,found:f,needles:c.needles};
   });
@@ -2902,7 +2880,6 @@ function kwHighlight(html,kws){
         from=end;
         if(i>0&&isW(norm.charAt(i-1)))continue;
         if(nd.exact&&end<norm.length&&isW(norm.charAt(end)))continue;
-        if(nd.ext)while(end<norm.length&&isW(norm.charAt(end)))end++;
         ranges.push([i,end]);
       }
     });
@@ -3207,6 +3184,7 @@ function togTeoria(i,btn){
   var closed=document.getElementById('rt-'+i).classList.toggle('hide');
   btn.setAttribute('aria-expanded',closed?'false':'true');
   btn.textContent=closed?'📖 Ver teoría':'📖 Ocultar teoría';
+  if(!closed)document.getElementById('rt-'+i).scrollIntoView({behavior:'smooth',block:'center'});
 }
 function restartEx(){
   document.getElementById('ex-res').classList.remove('on');
