@@ -21,7 +21,7 @@ buildTabs();
 buildCards();
 buildQzPills();
 buildExPills();
-document.getElementById('ex-tot').textContent=EQ.length;
+document.getElementById('ex-tot').textContent=EQ.length+EQ_VARIANTS.length;
 renderStats();
 initScreenSwipe();
 

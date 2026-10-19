@@ -167,7 +167,20 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
       <div class="eii"><div class="ein">4</div><div class="eil">Opciones</div></div>
       <div class="eii"><div class="ein">60%</div><div class="eil">Para aprobar</div></div>
     </div>
-    <p style="color:var(--mut);font-size:13px;margin-bottom:14px;line-height:1.6">Elegís una opción. El sistema te muestra al instante si acertaste. Al final ves tu nota real.</p>
+    <p id="ex-desc" style="color:var(--mut);font-size:13px;margin-bottom:14px;line-height:1.6">Elegís una opción. El sistema te muestra al instante si acertaste. Al final ves tu nota real.</p>
+    <p style="font-size:13px;color:var(--mut);margin-bottom:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Modo</p>
+    <div class="pills" id="ex-mode" role="group" aria-label="Modo del examen">
+      <div class="pill on" data-mode="mc" role="button" tabindex="0" aria-pressed="true" onclick="pickEM('mc',this)">Múltiple opción</div>
+      <div class="pill" data-mode="oral" role="button" tabindex="0" aria-pressed="false" onclick="pickEM('oral',this)">🎤 Modo oral</div>
+    </div>
+    <div id="ex-src-wrap">
+      <p style="font-size:13px;color:var(--mut);margin-bottom:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Preguntas</p>
+      <div class="pills" id="ex-src" role="group" aria-label="Origen de las preguntas">
+        <div class="pill on" role="button" tabindex="0" aria-pressed="true" onclick="pickES('std',this)">Preguntas estándar</div>
+        <div class="pill" role="button" tabindex="0" aria-pressed="false" onclick="pickES('var',this)">Variantes</div>
+        <div class="pill" role="button" tabindex="0" aria-pressed="false" onclick="pickES('mix',this)">Mixto</div>
+      </div>
+    </div>
     <p style="font-size:13px;color:var(--mut);margin-bottom:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Temas</p>
     <div class="pills" id="ex-pils"></div>
     <p style="font-size:13px;color:var(--mut);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em">Cantidad</p>
@@ -176,7 +189,7 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
       <div class="pill on" onclick="pickEQ(10,this)">10 normal</div>
       <div class="pill" onclick="pickEQ(0,this)">Todas</div>
     </div>
-    <button class="gbtn" onclick="startEx()">📝 Empezar examen</button>
+    <button class="gbtn" id="ex-start" onclick="startEx()">📝 Empezar examen</button>
   </div>
   <div class="eqw" id="ex-qw">
     <div class="ehd">
@@ -187,6 +200,13 @@ try{var _a=JSON.parse(localStorage.getItem('arq_license'));if(_a&&_a.version===L
     <div id="ex-diff" class="diff diff-media">★★ Media</div>
     <div class="eqc"><div class="eq" id="ex-q"></div></div>
     <div class="opts" id="ex-opts"></div>
+    <div id="ex-oral" class="hide">
+      <button type="button" class="rvbtn" id="ex-show" onclick="showOralA()">👁 Ver respuesta</button>
+      <div class="fc open" id="ex-oa" style="display:none;margin-bottom:0;text-align:left">
+        <div class="fca"><div class="al">Respuesta</div><div class="at" id="ex-oat"></div>
+        <div class="vd"><button type="button" class="bok" onclick="markOral(true)">✓ La sabía</button><button type="button" class="bno" onclick="markOral(false)">✗ No la sabía</button></div></div>
+      </div>
+    </div>
     <div class="fb" id="ex-fb"><div class="fbt" id="ex-fbt"></div><div class="fbc" id="ex-fbc"></div></div>
     <button class="enb" id="ex-nb" onclick="nextEx()">Siguiente →</button>
   </div>

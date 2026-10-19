@@ -757,3 +757,525 @@ const EQ = [
     "feedback": "<strong>Virus:</strong> necesita adjuntarse a un archivo <strong>huésped</strong> y se propaga solo cuando ese archivo se ejecuta.<br><br><strong>Gusano (Worm):</strong> se propaga <strong>automáticamente</strong> por la red explotando vulnerabilidades, sin necesitar ningún archivo huésped — por eso puede propagarse mucho más rápido y consumir gran cantidad de ancho de banda y recursos."
   }
 ];
+
+// Variantes de preguntas de examen (mismo formato que EQ, generadas desde el campo "a" de Q)
+const EQ_VARIANTS = [
+  {
+    "id": "xv1",
+    "cat": "Eje 1",
+    "diff": "media",
+    "q": "¿Qué computador es el ejemplo clásico de la 3ª generación (circuitos integrados)?",
+    "opts": [
+      "ENIAC",
+      "IBM 360",
+      "Intel 4004",
+      "Un computador con tubos de vacío de 1945"
+    ],
+    "correct": 1,
+    "feedback": "El <strong>IBM 360</strong> es el ejemplo de la <strong>3ª generación</strong> (<strong>1964-1971</strong>), basada en <strong>circuitos integrados</strong>: varios transistores en un único chip de silicio. En esta etapa aparecen los <strong>sistemas operativos</strong> y los primeros <strong>lenguajes de alto nivel</strong>.<br><br>Los otros ejemplos clave: <strong>ENIAC</strong> (1945) es de la 1ª generación e <strong>Intel 4004</strong> (1971) es el primer microprocesador comercial, de la 4ª."
+  },
+  {
+    "id": "xv2",
+    "cat": "Eje 1",
+    "diff": "dificil",
+    "q": "Si se retira la pila CR2032 de la placa madre, ¿qué ocurre?",
+    "opts": [
+      "El CMOS pierde fecha, hora y orden de arranque; el BIOS/UEFI no se borra",
+      "Se borra el BIOS/UEFI y la placa queda inutilizable",
+      "Se pierde todo el contenido del disco duro",
+      "La RAM deja de ser volátil y conserva sus datos"
+    ],
+    "correct": 0,
+    "feedback": "La pila <strong>CR2032</strong> alimenta la memoria <strong>CMOS</strong>, que guarda la <strong>fecha, la hora y el orden de arranque</strong> mientras el equipo está apagado. Sin ella, esa configuración vuelve a valores de fábrica.<br><br>El <strong>BIOS/UEFI</strong> NO se borra: está en una <strong>memoria flash</strong> independiente."
+  },
+  {
+    "id": "xv3",
+    "cat": "Eje 1",
+    "diff": "facil",
+    "q": "¿A qué valor decimal equivale FF en hexadecimal?",
+    "opts": [
+      "15",
+      "256",
+      "128",
+      "255"
+    ],
+    "correct": 3,
+    "feedback": "<strong>FF</strong> en hexadecimal es <strong>11111111</strong> en binario, que equivale a <strong>255</strong> en decimal. Cada dígito hexadecimal representa <strong>4 bits</strong>: F = 15 = 1111, y dos F forman un byte completo (<strong>8 bits</strong>).<br><br>El hexadecimal usa los dígitos <strong>0-9 y A-F</strong> (A=10 hasta F=15) y aparece en direcciones de memoria, colores web (#FF5733) y código máquina."
+  },
+  {
+    "id": "xv4",
+    "cat": "Eje 1",
+    "diff": "media",
+    "q": "¿Qué limitación de disco tiene el BIOS clásico frente a UEFI?",
+    "opts": [
+      "Solo soporta discos de hasta 2 GB; UEFI hasta 2 TB",
+      "No puede arrancar desde SSD; UEFI sí",
+      "Solo soporta discos de hasta 2 TB (tabla de particiones MBR); UEFI usa GPT",
+      "Solo arranca desde USB; UEFI desde discos internos"
+    ],
+    "correct": 2,
+    "feedback": "El <strong>BIOS</strong> clásico usa <strong>MBR</strong> y solo soporta discos de hasta <strong>2 TB</strong>, con interfaz de texto y arranque lento. <strong>UEFI</strong> usa <strong>GPT</strong> (discos mayores a 2 TB), tiene interfaz gráfica con mouse, arranque más rápido (<strong>Fast Boot</strong>) e incluye <strong>Secure Boot</strong> contra malware en el arranque."
+  },
+  {
+    "id": "xv5",
+    "cat": "Eje 2",
+    "diff": "media",
+    "q": "En un pipeline, ¿qué tipo de hazard ocurre cuando dos instrucciones necesitan el mismo recurso al mismo tiempo?",
+    "opts": [
+      "Hazard de datos",
+      "Hazard estructural",
+      "Hazard de control",
+      "Hazard de caché"
+    ],
+    "correct": 1,
+    "feedback": "Un <strong>hazard estructural</strong> aparece cuando dos instrucciones necesitan el <strong>mismo recurso</strong> a la vez.<br><br>Los tres hazards del pipeline: <strong>de datos</strong> (una instrucción necesita el resultado de la anterior, todavía sin terminar), <strong>de control</strong> (los saltos condicionales rompen el flujo) y <strong>estructural</strong> (conflicto por un recurso)."
+  },
+  {
+    "id": "xv6",
+    "cat": "Eje 2",
+    "diff": "media",
+    "q": "¿Qué sistema multiprocesador conecta computadoras completas por red, cada una con su propia memoria y su propio SO?",
+    "opts": [
+      "Cluster",
+      "SMP",
+      "NUMA",
+      "Multinúcleo"
+    ],
+    "correct": 0,
+    "feedback": "Un <strong>cluster</strong> está formado por <strong>computadoras completas</strong> conectadas por una red de alta velocidad; cada nodo tiene <strong>su propia memoria y su propio SO</strong>. Se usa en supercomputadoras.<br><br>En cambio, <strong>SMP</strong> comparte memoria y bus entre varios procesadores, y en <strong>NUMA</strong> cada procesador tiene memoria local pero puede acceder a la de otros. La clave: si comparten memoria física o no."
+  },
+  {
+    "id": "xv7",
+    "cat": "Eje 2",
+    "diff": "dificil",
+    "q": "¿En qué tres partes divide el estándar IEEE 754 un número de punto flotante?",
+    "opts": [
+      "Parte entera, parte decimal y base",
+      "Bit de paridad, dato y checksum",
+      "Opcode, operando y dirección",
+      "Signo, exponente y mantisa"
+    ],
+    "correct": 3,
+    "feedback": "<strong>IEEE 754</strong> representa los números de <strong>punto flotante</strong> en 32 o 64 bits y los divide en <strong>signo, exponente y mantisa</strong>. Es el <strong>float/double</strong> de la programación.<br><br>No confundir con <strong>ASCII</strong> (texto en 7 bits), <strong>UTF-8</strong> (todos los idiomas) o <strong>BCD</strong> (cada dígito decimal en 4 bits)."
+  },
+  {
+    "id": "xv8",
+    "cat": "Eje 2",
+    "diff": "facil",
+    "q": "¿Cuántos caracteres puede representar el código ASCII estándar?",
+    "opts": [
+      "256 caracteres (8 bits)",
+      "1.024 caracteres (10 bits)",
+      "128 caracteres (7 bits)",
+      "Más de 1,1 millones de caracteres"
+    ],
+    "correct": 2,
+    "feedback": "<strong>ASCII</strong> representa <strong>128 caracteres</strong> con <strong>7 bits</strong>: letras inglesas, dígitos y puntuación. Fue el primer estándar universal de codificación de texto.<br><br>Los más de <strong>1,1 millones</strong> de caracteres corresponden a <strong>Unicode/UTF-8</strong>, que es compatible con ASCII en sus primeros 128 caracteres."
+  },
+  {
+    "id": "xv9",
+    "cat": "Eje 3",
+    "diff": "media",
+    "q": "¿Quiénes desarrollaron los protocolos TCP/IP y en qué año?",
+    "opts": [
+      "Tim Berners-Lee, 1991",
+      "Vint Cerf y Bob Kahn, 1974",
+      "Vint Cerf y Bob Kahn, 1984",
+      "DARPA, 1969"
+    ],
+    "correct": 1,
+    "feedback": "<strong>Vint Cerf y Bob Kahn</strong> desarrollaron <strong>TCP/IP</strong> en <strong>1974</strong>: el lenguaje común que permite interconectar redes distintas.<br><br>No mezclar fechas: <strong>ARPANET</strong> (1969), <strong>DNS</strong> (1984), <strong>WWW</strong> (1991, Tim Berners-Lee en el CERN)."
+  },
+  {
+    "id": "xv10",
+    "cat": "Eje 3",
+    "diff": "media",
+    "q": "¿En qué año se creó el DNS (Sistema de Nombres de Dominio)?",
+    "opts": [
+      "1984",
+      "1969",
+      "1974",
+      "1991"
+    ],
+    "correct": 0,
+    "feedback": "El <strong>DNS</strong> se creó en <strong>1984</strong> y traduce nombres legibles (google.com) a <strong>direcciones IP</strong> numéricas.<br><br>Línea de tiempo: <strong>ARPANET</strong> 1969 → <strong>TCP/IP</strong> 1974 → <strong>DNS</strong> 1984 → <strong>WWW</strong> 1991."
+  },
+  {
+    "id": "xv11",
+    "cat": "Eje 3",
+    "diff": "dificil",
+    "q": "¿Qué empresa popularizó la frase \"La red es la computadora\" y en qué año?",
+    "opts": [
+      "IBM, 1964",
+      "Intel, 1971",
+      "Google, 1998",
+      "Sun Microsystems, 1984"
+    ],
+    "correct": 3,
+    "feedback": "La frase <strong>\"La red es la computadora\"</strong> es de <strong>Sun Microsystems</strong> (<strong>1984</strong>) y resume la <strong>computación centrada en redes</strong>: procesamiento, almacenamiento y aplicaciones residen en la red, no en el dispositivo local.<br><br>Esa idea evolucionó hacia el <strong>Cloud Computing</strong> actual (AWS, Google Cloud, Azure)."
+  },
+  {
+    "id": "xv12",
+    "cat": "Eje 4",
+    "diff": "media",
+    "q": "¿Cuántos hosts como máximo admite una red con máscara 255.255.255.0 (/24)?",
+    "opts": [
+      "255",
+      "256",
+      "254",
+      "65.534"
+    ],
+    "correct": 2,
+    "feedback": "Con <strong>255.255.255.0 (/24)</strong> los primeros 3 octetos identifican la red y el último el host: hasta <strong>254 hosts</strong>.<br><br>Para comparar: <strong>/16</strong> (255.255.0.0) admite hasta <strong>65.534</strong> hosts y <strong>/8</strong> (255.0.0.0) hasta unos <strong>16 millones</strong>."
+  },
+  {
+    "id": "xv13",
+    "cat": "Eje 4",
+    "diff": "dificil",
+    "q": "Un dispositivo tiene la IP 192.168.1.100 y la máscara 255.255.255.0. ¿Cuál es su dirección de red?",
+    "opts": [
+      "192.168.0.0",
+      "192.168.1.0",
+      "192.168.1.100",
+      "192.168.1.255"
+    ],
+    "correct": 1,
+    "feedback": "Se aplica un <strong>AND bit a bit</strong> entre la IP y la máscara: los bits en 1 de la máscara conservan la parte de <strong>red</strong> y los bits en 0 la parte de <strong>host</strong>. Resultado: red <strong>192.168.1.0</strong>, host <strong>100</strong>.<br><br>Ese dispositivo solo puede comunicarse directamente con equipos <strong>192.168.1.x</strong>; para otras redes necesita un <strong>router</strong>."
+  },
+  {
+    "id": "xv14",
+    "cat": "Eje 4",
+    "diff": "facil",
+    "q": "¿Qué puertos usan por defecto HTTP y HTTPS?",
+    "opts": [
+      "80 (HTTP) y 443 (HTTPS)",
+      "21 (HTTP) y 20 (HTTPS)",
+      "53 (HTTP) y 80 (HTTPS)",
+      "443 (HTTP) y 80 (HTTPS)"
+    ],
+    "correct": 0,
+    "feedback": "<strong>HTTP</strong> usa el puerto <strong>80</strong> y <strong>HTTPS</strong> (que agrega cifrado <strong>SSL/TLS</strong>) el <strong>443</strong>.<br><br>Otros puertos para recordar: <strong>DNS</strong> 53 y <strong>FTP</strong> 20 y 21."
+  },
+  {
+    "id": "xv15",
+    "cat": "Eje 4",
+    "diff": "media",
+    "q": "¿Qué categoría de cable UTP soporta velocidades de hasta 10 Gbps?",
+    "opts": [
+      "Cat5e",
+      "Cat6",
+      "Cat3",
+      "Cat6A"
+    ],
+    "correct": 3,
+    "feedback": "<strong>Cat6A</strong> llega a <strong>10 Gbps</strong>. Las categorías: <strong>Cat5e</strong> (100 Mbps), <strong>Cat6</strong> (1 Gbps) y <strong>Cat6A</strong> (10 Gbps).<br><br>El <strong>par trenzado</strong> (UTP/STP) es el medio más común en redes LAN: económico y fácil de instalar."
+  },
+  {
+    "id": "xv16",
+    "cat": "Eje 4",
+    "diff": "dificil",
+    "q": "¿Qué protocolo de enrutamiento usa el algoritmo de estado de enlace y es más complejo que RIP?",
+    "opts": [
+      "RIP",
+      "BGP",
+      "OSPF",
+      "DHCP"
+    ],
+    "correct": 2,
+    "feedback": "<strong>OSPF</strong> es de <strong>estado de enlace</strong> y más complejo que <strong>RIP</strong>, que es sencillo y de <strong>distancia vector</strong>.<br><br><strong>BGP</strong> es el que se usa en Internet entre proveedores. <strong>DHCP</strong> no es de enrutamiento: asigna IPs automáticamente."
+  },
+  {
+    "id": "xv17",
+    "cat": "Eje 5",
+    "diff": "dificil",
+    "q": "¿Qué ley argentina le da validez legal a la firma digital?",
+    "opts": [
+      "Ley 25.326",
+      "Ley 25.506",
+      "Ley 26.388",
+      "Ley 11.723"
+    ],
+    "correct": 1,
+    "feedback": "En Argentina la <strong>firma digital</strong> tiene validez legal por la <strong>Ley 25.506</strong>. Se usa en facturas electrónicas, contratos digitales y software.<br><br>Recordá que no es una firma escaneada: es un proceso criptográfico con <strong>clave privada</strong> que garantiza <strong>autenticidad, integridad y no repudio</strong>."
+  },
+  {
+    "id": "xv18",
+    "cat": "Eje 5",
+    "diff": "media",
+    "q": "¿Cómo se llama el phishing dirigido específicamente a ejecutivos?",
+    "opts": [
+      "Whaling",
+      "Spear phishing",
+      "Vishing",
+      "Baiting"
+    ],
+    "correct": 0,
+    "feedback": "El <strong>whaling</strong> es el phishing dirigido a <strong>ejecutivos</strong>. El <strong>spear phishing</strong> apunta a una <strong>persona específica</strong>, y el <strong>vishing</strong> es phishing por <strong>llamada telefónica</strong>.<br><br>Todas son técnicas de <strong>Ingeniería Social</strong>: atacan personas, no sistemas."
+  },
+  {
+    "id": "xv19",
+    "cat": "Eje 5",
+    "diff": "facil",
+    "q": "¿Cuál de estos algoritmos es de criptografía simétrica?",
+    "opts": [
+      "RSA",
+      "ECC",
+      "SHA-256",
+      "AES"
+    ],
+    "correct": 3,
+    "feedback": "<strong>AES</strong> (junto con DES y 3DES) es <strong>simétrico</strong>: usa la <strong>misma clave</strong> para cifrar y descifrar, y es rápido.<br><br><strong>RSA</strong> y <strong>ECC</strong> son <strong>asimétricos</strong> (par de claves pública/privada) y <strong>SHA-256</strong> es una función <strong>hash</strong> (unidireccional, para verificar integridad). HTTPS combina simétrica y asimétrica."
+  },
+  {
+    "id": "xv20",
+    "cat": "Eje 5",
+    "diff": "media",
+    "q": "Un atacante deja pendrives infectados en un lugar público esperando que alguien los conecte. ¿Qué técnica de Ingeniería Social es?",
+    "opts": [
+      "Tailgating",
+      "Pretexting",
+      "Baiting",
+      "Vishing"
+    ],
+    "correct": 2,
+    "feedback": "Dejar dispositivos infectados (USB, CD) en lugares públicos es <strong>baiting</strong>: se usa la curiosidad como \"carnada\".<br><br>Otras técnicas: <strong>pretexting</strong> (historia falsa para ganar confianza), <strong>vishing</strong> (phishing por llamada) y <strong>tailgating</strong> (acceso físico siguiendo a alguien autorizado)."
+  },
+  {
+    "id": "xv21",
+    "cat": "Von Neumann",
+    "diff": "facil",
+    "q": "¿Quién propuso la arquitectura de Von Neumann y en qué año?",
+    "opts": [
+      "Alan Turing, 1936",
+      "El matemático John von Neumann, 1945",
+      "Intel, 1971",
+      "IBM, 1964"
+    ],
+    "correct": 1,
+    "feedback": "La arquitectura fue propuesta por el matemático <strong>John von Neumann</strong> en <strong>1945</strong>. Introdujo el concepto de <strong>programa almacenado</strong>: las instrucciones residen en memoria igual que los datos, lo que permite modificar el programa en tiempo de ejecución."
+  },
+  {
+    "id": "xv22",
+    "cat": "Von Neumann",
+    "diff": "media",
+    "q": "¿Qué registro contiene la dirección de memoria de la próxima instrucción a ejecutar?",
+    "opts": [
+      "CP (Contador de Programa)",
+      "IR (Registro de Instrucción)",
+      "AC (Acumulador)",
+      "MAR (Memory Address Register)"
+    ],
+    "correct": 0,
+    "feedback": "El <strong>CP</strong> guarda la dirección de la <strong>próxima instrucción</strong> y se incrementa automáticamente después de cada <strong>fetch</strong>.<br><br>El <strong>IR</strong> contiene la instrucción que se está ejecutando ahora, el <strong>AC</strong> guarda resultados de la ALU y el <strong>MAR</strong> la dirección de memoria a leer o escribir."
+  },
+  {
+    "id": "xv23",
+    "cat": "Von Neumann",
+    "diff": "media",
+    "q": "¿Qué registro guarda la dirección de memoria que se quiere leer o escribir?",
+    "opts": [
+      "MBR (Memory Buffer Register)",
+      "CP (Contador de Programa)",
+      "AC (Acumulador)",
+      "MAR (Memory Address Register)"
+    ],
+    "correct": 3,
+    "feedback": "El <strong>MAR</strong> actúa como \"puntero\" al acceder a la memoria principal. El <strong>MBR</strong>, en cambio, guarda el <strong>dato</strong> leído o por escribir.<br><br>Regla para el oral: <strong>CP</strong> e <strong>IR</strong> son para instrucciones; <strong>MAR</strong> y <strong>MBR</strong> son para datos en tránsito desde/hacia la memoria."
+  },
+  {
+    "id": "xv24",
+    "cat": "Topologías",
+    "diff": "media",
+    "q": "¿Cuántos enlaces se necesitan en una malla completa (full mesh) de 5 nodos?",
+    "opts": [
+      "5",
+      "15",
+      "10",
+      "20"
+    ],
+    "correct": 2,
+    "feedback": "En una malla completa de <strong>n nodos</strong> se necesitan <strong>n(n-1)/2</strong> enlaces. Con <strong>5 nodos</strong>: 5×4/2 = <strong>10 enlaces</strong>.<br><br>La <strong>malla parcial</strong> conecta cada nodo con varios pero no todos: equilibra redundancia y costo."
+  },
+  {
+    "id": "xv25",
+    "cat": "Topologías",
+    "diff": "facil",
+    "q": "¿Qué topología combina varias estrellas organizadas de forma jerárquica?",
+    "opts": [
+      "Bus",
+      "Árbol",
+      "Anillo",
+      "Malla"
+    ],
+    "correct": 1,
+    "feedback": "La topología de <strong>Árbol</strong> combina <strong>estrellas jerárquicas</strong>: nodo raíz, nodos intermedios y nodos hoja. Es muy <strong>escalable</strong>, pero si cae un nodo intermedio o la raíz, cae todo lo que depende de él.<br><br>Contraste: <strong>Malla</strong> = más redundante; <strong>Árbol</strong> = más escalable."
+  },
+  {
+    "id": "xv26",
+    "cat": "Topologías",
+    "diff": "dificil",
+    "q": "¿Qué estándar de Ethernet antiguo, con cable coaxial, usaba topología de bus?",
+    "opts": [
+      "10BASE-2",
+      "10BASE-T",
+      "100BASE-TX",
+      "1000BASE-T"
+    ],
+    "correct": 0,
+    "feedback": "<strong>10BASE-2</strong> (coaxial) fue una red Ethernet típica de <strong>topología de bus</strong>. Hoy está en desuso, reemplazada por la topología en <strong>estrella con switches</strong> sobre cable UTP."
+  },
+  {
+    "id": "xv27",
+    "cat": "Topologías",
+    "diff": "media",
+    "q": "En la topología de Anillo, ¿en qué sentido viajan los datos?",
+    "opts": [
+      "En ambas direcciones por un cable central",
+      "Siempre a través de un concentrador",
+      "Directamente a todos los nodos a la vez",
+      "En una sola dirección, de nodo en nodo"
+    ],
+    "correct": 3,
+    "feedback": "En el <strong>Anillo</strong> los datos viajan de nodo en nodo en <strong>una sola dirección</strong>, sin concentrador. Ventaja: <strong>sin colisiones</strong> y acceso ordenado al medio. Desventaja: si falla un nodo o enlace, puede interrumpirse toda la red.<br><br>En el <strong>Bus</strong>, en cambio, los datos viajan en <strong>ambas direcciones</strong> por el cable central."
+  },
+  {
+    "id": "xv28",
+    "cat": "OSI/TCP-IP",
+    "diff": "media",
+    "q": "¿Qué capas del modelo OSI se combinan en la capa Aplicación de TCP/IP?",
+    "opts": [
+      "Transporte, Red y Enlace (capas 4, 3 y 2)",
+      "Red y Física (capas 3 y 1)",
+      "Aplicación, Presentación y Sesión (capas 7, 6 y 5)",
+      "Solo Aplicación (capa 7)"
+    ],
+    "correct": 2,
+    "feedback": "Las capas <strong>5 (Sesión)</strong>, <strong>6 (Presentación)</strong> y <strong>7 (Aplicación)</strong> del OSI se combinan en la capa <strong>Aplicación</strong> de TCP/IP, que tiene <strong>4 capas</strong> en total."
+  },
+  {
+    "id": "xv29",
+    "cat": "OSI/TCP-IP",
+    "diff": "media",
+    "q": "¿Con qué unidad de datos y qué tipo de direcciones trabaja la capa de Enlace de datos (capa 2)?",
+    "opts": [
+      "Paquetes y direcciones IP",
+      "Tramas y direcciones MAC",
+      "Bits y señales eléctricas",
+      "Segmentos y números de puerto"
+    ],
+    "correct": 1,
+    "feedback": "La capa 2 (<strong>Enlace de datos</strong>) trabaja con <strong>tramas</strong> y <strong>direcciones MAC</strong>, transmitiendo entre nodos directamente conectados. El <strong>switch</strong> opera en esta capa.<br><br>La capa 3 (Red) usa paquetes e <strong>IP</strong>, y la capa 1 (Física) transmite <strong>bits</strong>."
+  },
+  {
+    "id": "xv30",
+    "cat": "OSI/TCP-IP",
+    "diff": "facil",
+    "q": "¿Qué capa del modelo OSI se ocupa del formato, el cifrado y la compresión de los datos?",
+    "opts": [
+      "Capa 6 – Presentación",
+      "Capa 5 – Sesión",
+      "Capa 4 – Transporte",
+      "Capa 2 – Enlace de datos"
+    ],
+    "correct": 0,
+    "feedback": "La capa <strong>6 – Presentación</strong> se encarga del <strong>formato, cifrado y compresión</strong> de los datos, traduciendo entre formatos de red y de aplicación.<br><br>La capa <strong>5 – Sesión</strong> gestiona el inicio, mantenimiento y cierre de las conexiones entre aplicaciones."
+  },
+  {
+    "id": "xv31",
+    "cat": "Karnaugh",
+    "diff": "media",
+    "q": "¿Qué forma canónica se obtiene al agrupar los 0s en un mapa de Karnaugh?",
+    "opts": [
+      "SOP — Suma de Productos (minterms)",
+      "Forma binaria",
+      "Forma hexadecimal",
+      "POS — Producto de Sumas (maxterms)"
+    ],
+    "correct": 3,
+    "feedback": "Agrupar <strong>0s</strong> da la forma <strong>POS</strong> (Producto de Sumas): términos <strong>OR conectados por AND</strong>, llamada forma canónica de <strong>maxterms</strong>.<br><br>Agrupar <strong>1s</strong> da <strong>SOP</strong> (Suma de Productos, minterms). Ambas representan la misma función booleana."
+  },
+  {
+    "id": "xv32",
+    "cat": "Karnaugh",
+    "diff": "facil",
+    "q": "¿Cuántas variables se cancelan al formar un grupo de 4 celdas?",
+    "opts": [
+      "1 variable",
+      "3 variables",
+      "2 variables",
+      "4 variables"
+    ],
+    "correct": 2,
+    "feedback": "El patrón de cancelación: grupo de <strong>2</strong> celdas → se cancela <strong>1</strong> variable; grupo de <strong>4</strong> → <strong>2</strong>; grupo de <strong>8</strong> → <strong>3</strong>; grupo de <strong>16</strong> → <strong>4</strong> (función constante = 1).<br><br>Se apoya en la propiedad <strong>A + Ā = 1</strong>."
+  },
+  {
+    "id": "xv33",
+    "cat": "Karnaugh",
+    "diff": "dificil",
+    "q": "En un mapa de Karnaugh, ¿qué significa que los bordes opuestos son adyacentes (wrap-around)?",
+    "opts": [
+      "Los grupos de 3 celdas son válidos",
+      "Se pueden agrupar celdas de bordes opuestos del mapa",
+      "Una celda no puede pertenecer a más de un grupo",
+      "Solo se agrupan celdas en el centro del mapa"
+    ],
+    "correct": 1,
+    "feedback": "Con el <strong>wrap-around</strong>, los bordes opuestos del mapa son <strong>adyacentes</strong>, así que se pueden agrupar celdas de esos bordes.<br><br>Otras reglas: los grupos pueden <strong>solaparse</strong>, siempre se buscan primero los grupos más grandes posibles y su tamaño debe ser <strong>potencia de 2</strong>."
+  },
+  {
+    "id": "xv34",
+    "cat": "V / F",
+    "diff": "media",
+    "q": "¿Cuál de estas afirmaciones sobre la memoria virtual es VERDADERA?",
+    "opts": [
+      "Es una técnica del SO que usa espacio en disco (archivo de paginación o swap) para simular más RAM",
+      "Es un módulo físico de RAM más lento que se instala en la placa",
+      "Es más rápida que la RAM porque usa el disco",
+      "Elimina por completo el riesgo de thrashing"
+    ],
+    "correct": 0,
+    "feedback": "La <strong>memoria virtual</strong> NO es un componente físico ni es RAM: es una técnica del <strong>SO</strong> que mueve páginas inactivas a un <strong>archivo de paginación</strong> (Windows) o <strong>swap</strong> (Linux).<br><br>Es mucho más lenta que la RAM y, si se abusa de ella, produce <strong>thrashing</strong>."
+  },
+  {
+    "id": "xv35",
+    "cat": "V / F",
+    "diff": "media",
+    "q": "¿Cuál de estas afirmaciones sobre las compuertas lógicas es FALSA?",
+    "opts": [
+      "NAND es una compuerta universal",
+      "NOT invierte el valor de la entrada",
+      "NOR da 1 solo cuando todas sus entradas son 0",
+      "La compuerta XOR da 1 cuando ambas entradas son iguales"
+    ],
+    "correct": 3,
+    "feedback": "La falsa es la de <strong>XOR</strong>: da <strong>1 cuando las entradas son diferentes</strong> y 0 cuando son iguales. La que da 1 con entradas iguales es <strong>XNOR</strong>.<br><br><strong>NAND</strong> y <strong>NOR</strong> son compuertas <strong>universales</strong>."
+  },
+  {
+    "id": "xv36",
+    "cat": "V / F",
+    "diff": "media",
+    "q": "¿Cuál de estas afirmaciones sobre la topología de Bus es VERDADERA?",
+    "opts": [
+      "Usa un concentrador central",
+      "Es la topología más tolerante a fallos",
+      "Todos los nodos reciben los datos, pero solo el destinatario los procesa",
+      "Cada nodo se conecta exactamente a otros dos"
+    ],
+    "correct": 2,
+    "feedback": "En el <strong>Bus</strong> los datos viajan por un <strong>cable central compartido (backbone)</strong>: todos los reciben pero solo el destinatario los procesa. Si el cable falla, cae toda la red, y dos transmisiones simultáneas producen una <strong>colisión</strong>.<br><br>El concentrador es de la <strong>Estrella</strong>, la mayor tolerancia a fallos es de la <strong>Malla</strong> y \"exactamente 2 vecinos\" es del <strong>Anillo</strong>."
+  },
+  {
+    "id": "xv37",
+    "cat": "V / F",
+    "diff": "dificil",
+    "q": "¿Cuál de estas afirmaciones sobre los modelos OSI y TCP/IP es FALSA?",
+    "opts": [
+      "OSI tiene 7 capas y TCP/IP tiene 4",
+      "El modelo OSI entra en funcionamiento cuando TCP/IP falla",
+      "TCP/IP es el modelo práctico que mueve Internet",
+      "OSI se usa como referencia para diagnosticar problemas de red"
+    ],
+    "correct": 1,
+    "feedback": "Es falso que <strong>OSI</strong> \"aparezca\" cuando TCP/IP falla: OSI es solo una <strong>referencia conceptual</strong> (ISO) para entender, diseñar y diagnosticar redes, no un sistema activo.<br><br>TCP/IP (<strong>DARPA</strong>) es el modelo que realmente opera en Internet."
+  }
+];

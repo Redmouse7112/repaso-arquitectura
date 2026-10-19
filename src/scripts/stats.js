@@ -97,7 +97,7 @@ function renderStats(){
     var wh='';
     sf.forEach(function(e){
       var id=e[0],n=e[1];
-      var q=Q.find(function(x){return x.id===id;})||EQ.find(function(x){return x.id===id;});
+      var q=Q.find(function(x){return x.id===id;})||EQ.concat(EQ_VARIANTS).find(function(x){return x.id===id;});
       if(q)wh+='<div class="wi"><strong>'+(q.catLabel||q.cat)+' · '+(n>1?n+' veces':n+' vez')+'</strong>'+q.q+'</div>';
     });
     document.getElementById('st-wk').innerHTML=wh;

@@ -1,6 +1,7 @@
 // ── EXAMEN ──
 var eQ=[], eI=0, eOk=0, eRes=[];
 var eQty=10, eFilt=['all'];
+var eMode='mc', eSrc='std', eRun='mc'; // modo/origen elegidos y modo de la sesión en curso
 var curOpts=[], curCorrect=0;
 
 function buildExPills(){
@@ -35,15 +36,48 @@ function pickEQ(n,el){
   document.querySelectorAll('#ex-set .pills .pill[onclick^="pickEQ"]').forEach(function(p){p.classList.remove('on');});
   el.classList.add('on');
 }
+function selPill(el,group){
+  document.querySelectorAll(group+' .pill').forEach(function(p){
+    p.classList.remove('on');p.setAttribute('aria-pressed','false');
+  });
+  el.classList.add('on');el.setAttribute('aria-pressed','true');
+}
+function pickEM(mode,el){
+  eMode=mode;
+  selPill(el,'#ex-mode');
+  var oral=mode==='oral';
+  // el modo oral usa las tarjetas del Repaso (Q): no aplica el origen estándar/variantes
+  document.getElementById('ex-src-wrap').classList.toggle('hide',oral);
+  document.getElementById('ex-desc').textContent=oral
+    ?'Te preguntan sin opciones: pensá la respuesta en voz alta, mirala y marcá si la sabías. Al final ves tu nota real.'
+    :'Elegís una opción. El sistema te muestra al instante si acertaste. Al final ves tu nota real.';
+  document.getElementById('ex-start').textContent=oral?'🎤 Empezar examen oral':'📝 Empezar examen';
+}
+function pickES(src,el){
+  eSrc=src;
+  selPill(el,'#ex-src');
+}
+// pills operables con teclado (Enter / Espacio)
+document.addEventListener('keydown',function(e){
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('#ex-mode .pill, #ex-src .pill')){
+    e.preventDefault();e.target.click();
+  }
+});
 function startEx(){
-  var pool=EQ.slice();
+  var oral=eMode==='oral';
+  var pool=oral?Q.slice():eSrc==='var'?EQ_VARIANTS.slice():eSrc==='mix'?EQ.concat(EQ_VARIANTS):EQ.slice();
   if(eFilt.indexOf('all')<0){
-    var labels=eFilt.map(function(id){return CATS.find(function(c){return c.id===id;}).label;});
-    pool=pool.filter(function(q){return labels.indexOf(q.cat)>=0;});
+    if(oral){
+      pool=pool.filter(function(q){return eFilt.indexOf(q.cat)>=0;});
+    } else {
+      var labels=eFilt.map(function(id){return CATS.find(function(c){return c.id===id;}).label;});
+      pool=pool.filter(function(q){return labels.indexOf(q.cat)>=0;});
+    }
     if(!pool.length){alert('No hay preguntas de examen para los temas elegidos.');return;}
   }
   pool=pool.sort(function(){return Math.random()-.5;});
   eQ=eQty>0?pool.slice(0,eQty):pool;
+  eRun=eMode;
   eI=0;eOk=0;eRes=[];
   document.getElementById('ex-set').classList.add('hide');
   document.getElementById('ex-res').classList.remove('on');
@@ -53,14 +87,29 @@ function startEx(){
 function showExQ(){
   if(eI>=eQ.length){endEx();return;}
   var q=eQ[eI];
+  var oral=eRun==='oral';
   document.getElementById('ex-num').textContent=(eI+1)+'/'+eQ.length;
   document.getElementById('ex-pb').style.width=(eI/eQ.length*100)+'%';
-  document.getElementById('ex-cat').textContent=q.cat;
+  document.getElementById('ex-cat').textContent=oral?q.catLabel:q.cat;
   var dlbl={'facil':'★ Fácil','media':'★★ Media','dificil':'★★★ Difícil'};
   var dcls={'facil':'diff diff-facil','media':'diff diff-media','dificil':'diff diff-dificil'};
+  var dk=oral?oralDiff(q):q.diff;
   var dEl=document.getElementById('ex-diff');
-  if(dEl){dEl.className=dcls[q.diff]||'diff diff-media';dEl.textContent=dlbl[q.diff]||q.diff;}
+  if(dEl){dEl.className=dcls[dk]||'diff diff-media';dEl.textContent=dlbl[dk]||dk;}
   document.getElementById('ex-q').textContent=q.q;
+  var fb=document.getElementById('ex-fb');
+  fb.className='fb';
+  document.getElementById('ex-fbt').textContent='';
+  document.getElementById('ex-fbc').innerHTML='';
+  document.getElementById('ex-nb').classList.remove('on');
+  document.getElementById('ex-opts').classList.toggle('hide',oral);
+  document.getElementById('ex-oral').classList.toggle('hide',!oral);
+  if(oral){
+    document.getElementById('ex-oat').innerHTML=q.a+(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'');
+    document.getElementById('ex-show').classList.remove('hide');
+    document.getElementById('ex-oa').style.display='none';
+    return;
+  }
   var order=q.opts.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
   curOpts=order.map(function(i){return q.opts[i];});
   curCorrect=order.indexOf(q.correct);
@@ -71,11 +120,40 @@ function showExQ(){
       +'<div class="lt">'+L[i]+'</div><div>'+o+'</div></button>';
   });
   document.getElementById('ex-opts').innerHTML=h;
-  var fb=document.getElementById('ex-fb');
-  fb.className='fb';
-  document.getElementById('ex-fbt').textContent='';
-  document.getElementById('ex-fbc').innerHTML='';
-  document.getElementById('ex-nb').classList.remove('on');
+}
+// ── modo oral ──
+// Q no tiene dificultad: se toma la de la pregunta de examen (EQ o variante) del mismo eje más parecida; si no hay, media.
+var oralDiffCache={};
+function oralDiff(q){
+  if(oralDiffCache[q.id])return oralDiffCache[q.id];
+  var want=thToks(q.q+' '+q.a),best='media',bs=0;
+  EQ.concat(EQ_VARIANTS).forEach(function(e){
+    if(e.cat!==q.catLabel)return;
+    var have=thToks(e.q+' '+e.opts[e.correct]+' '+e.feedback),n=0,m=0;
+    Object.keys(have).forEach(function(w){m++;if(want[w])n++;});
+    var sc=n/Math.sqrt(m+1);
+    if(sc>bs){bs=sc;best=e.diff;}
+  });
+  return (oralDiffCache[q.id]=best);
+}
+function showOralA(){
+  document.getElementById('ex-show').classList.add('hide');
+  var a=document.getElementById('ex-oa');
+  a.style.display='block';
+  a.setAttribute('tabindex','-1');
+  a.style.outline='none';
+  a.focus({preventScroll:true});
+}
+function markOral(ok){
+  var q=eQ[eI];
+  if(ok)eOk++;
+  else{fails[q.id]=(fails[q.id]||0)+1;localStorage.setItem('af',JSON.stringify(fails));}
+  recExamCat(q.cat,ok);
+  eRes.push({id:q.id,q:q.q,cat:q.catLabel,ok:ok,oral:true,item:q});
+  eI++;
+  showExQ();
+  var w=document.getElementById('ex-qw');
+  if(w&&w.scrollIntoView)w.scrollIntoView({block:'nearest'});
 }
 function pickO(idx,qid){
   var q=eQ[eI];
@@ -93,7 +171,7 @@ function pickO(idx,qid){
   else{fails[qid]=(fails[qid]||0)+1;localStorage.setItem('af',JSON.stringify(fails));}
   var qCat=CATS.find(function(c){return c.label===q.cat;});
   if(qCat)recExamCat(qCat.id,ok);
-  eRes.push({id:qid,q:q.q,cat:q.cat,ok:ok,your:curOpts[idx],ans:curOpts[curCorrect]});
+  eRes.push({id:qid,q:q.q,cat:q.cat,ok:ok,your:curOpts[idx],ans:curOpts[curCorrect],item:q});
   var nb=document.getElementById('ex-nb');
   nb.textContent=eI+1>=eQ.length?'Ver resultado →':'Siguiente →';
   nb.classList.add('on');
@@ -116,10 +194,12 @@ function endEx(){
   document.getElementById('ex-wr').textContent=eQ.length-eOk;
   var rv='<div class="sec" style="margin-top:0">Revisión</div>';
   eRes.forEach(function(r,i){
-    var t=r.ok?null:findTheory(EQ.find(function(x){return x.id===r.id;}));
+    var t=r.ok?null:(r.oral?r.item:findTheory(r.item));
     rv+='<div class="rai '+(r.ok?'ok':'no')+'"><div class="raq">'+r.q+'</div>'
-      +'<div class="ray'+(r.ok?'':' w')+'">Tu respuesta: '+r.your+'</div>'
-      +(r.ok?'':'<div class="rac">✓ Correcta: '+r.ans+'</div>')
+      +(r.oral
+        ?'<div class="ray'+(r.ok?'':' w')+'">'+(r.ok?'✓ La sabías':'✗ No la sabías')+'</div>'
+        :'<div class="ray'+(r.ok?'':' w')+'">Tu respuesta: '+r.your+'</div>'
+          +(r.ok?'':'<div class="rac">✓ Correcta: '+r.ans+'</div>'))
       +(t?theoryHTML(t,i):'')
       +'</div>';
   });
