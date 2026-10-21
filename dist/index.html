@@ -2557,12 +2557,16 @@ function buildCards(){
     if(!qs.length)return;
     html+='<div class="sec" data-sec="'+cat.id+'">'+cat.label+'</div>';
     qs.forEach(function(q){
+      var cond=condenseA(q.a,4);
+      var short=kwPlain(cond).length>=kwPlain(q.a).length*0.9; // la condensada no ahorra nada: sin botón
       html+='<div class="fc" data-cat="'+q.cat+'" id="fc-'+q.id+'">'
         +'<div class="fcq" onclick="togFC(\''+q.id+'\')">'
         +'<div><div class="ql">'+q.catLabel+'</div><div class="qt">'+q.q+'</div></div>'
         +'<div class="arr">▼</div></div>'
         +'<div class="fca"><div class="al">Respuesta</div>'
-        +'<div class="at">'+q.a+(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'')+'</div>'
+        +'<div class="at"><div class="rs">'+cond+'</div>'+(short?'':'<div class="rf hide">'+q.a+'</div>')
+        +(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'')+'</div>'
+        +(short?'':'<button type="button" class="kwfull" aria-expanded="false" onclick="togFullR(\''+q.id+'\',this)">Ver completa</button>')
         +'<div class="vd">'
         +'<button class="bok" onclick="markR(\''+q.id+'\',\'ok\')">✓ La sabía</button>'
         +'<button class="bno" onclick="markR(\''+q.id+'\',\'no\')">✗ A repasar</button>'
@@ -2577,6 +2581,14 @@ function buildCards(){
   });
   updR();
   attachFlashcardSwipe();
+}
+// condensada ⇄ completa
+function togFullR(id,btn){
+  var fc=document.getElementById('fc-'+id);
+  var full=fc.querySelector('.rf').classList.toggle('hide')===false;
+  fc.querySelector('.rs').classList.toggle('hide',full);
+  btn.setAttribute('aria-expanded',full?'true':'false');
+  btn.textContent=full?'Ver resumida':'Ver completa';
 }
 function togFC(id){document.getElementById('fc-'+id).classList.toggle('open');}
 function setBadge(id,res){
@@ -2953,6 +2965,23 @@ function kwHighlight(html,kws){
   return box.innerHTML;
 }
 
+// Versión condensada de una respuesta: hasta `max` puntos de lista con <strong>; sin lista, las 2 primeras oraciones
+function condenseA(html,max){
+  var box=document.createElement('div');
+  box.innerHTML=html;
+  var lis=[].slice.call(box.querySelectorAll('li')).filter(function(li){return li.querySelector('strong');});
+  var out;
+  if(lis.length){
+    out='<ul>'+lis.slice(0,max).map(function(li){return '<li>'+li.innerHTML+'</li>';}).join('')+'</ul>';
+  } else {
+    var t=html.replace(/<br\s*\/?>/gi,' ').replace(/<strong[^>]*>/gi,'<strong>').replace(/<(?!\/?strong>)[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+    var ss=t.match(/[^.!?]+[.!?]+(\s|$)/g)||[t];
+    out='<div>'+ss.slice(0,2).join('').trim()+'</div>';
+  }
+  box.innerHTML=out; // cierra etiquetas que haya cortado el recorte
+  return box.innerHTML;
+}
+
 // ── EXAMEN ──
 var eQ=[], eI=0, eOk=0, eRes=[];
 var eQty=10, eFilt=['all'];
@@ -3096,25 +3125,9 @@ function oralDiff(q){
   });
   return (oralDiffCache[q.id]=best);
 }
-// Versión condensada de la respuesta: hasta 5 puntos de lista con <strong>; sin lista, las 2 primeras oraciones
-function condenseA(html){
-  var box=document.createElement('div');
-  box.innerHTML=html;
-  var lis=[].slice.call(box.querySelectorAll('li')).filter(function(li){return li.querySelector('strong');});
-  var out;
-  if(lis.length){
-    out='<ul>'+lis.slice(0,5).map(function(li){return '<li>'+li.innerHTML+'</li>';}).join('')+'</ul>';
-  } else {
-    var t=html.replace(/<br\s*\/?>/gi,' ').replace(/<strong[^>]*>/gi,'<strong>').replace(/<(?!\/?strong>)[^>]*>/g,' ').replace(/\s+/g,' ').trim();
-    var ss=t.match(/[^.!?]+[.!?]+(\s|$)/g)||[t];
-    out='<div>'+ss.slice(0,2).join('').trim()+'</div>';
-  }
-  box.innerHTML=out; // cierra etiquetas que haya cortado el recorte
-  return box.innerHTML;
-}
 function renderOralA(){
   var q=eQ[eI];
-  var cond=condenseA(q.a);
+  var cond=condenseA(q.a,5);
   var short=kwPlain(cond).length>=kwPlain(q.a).length*0.9; // la condensada no ahorra nada: sin botón
   document.getElementById('ex-oat').innerHTML=kwHighlight(eFull||short?q.a:cond,eWritten.kws)
     +(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'');

@@ -19,12 +19,16 @@ function buildCards(){
     if(!qs.length)return;
     html+='<div class="sec" data-sec="'+cat.id+'">'+cat.label+'</div>';
     qs.forEach(function(q){
+      var cond=condenseA(q.a,4);
+      var short=kwPlain(cond).length>=kwPlain(q.a).length*0.9; // la condensada no ahorra nada: sin botón
       html+='<div class="fc" data-cat="'+q.cat+'" id="fc-'+q.id+'">'
         +'<div class="fcq" onclick="togFC(\''+q.id+'\')">'
         +'<div><div class="ql">'+q.catLabel+'</div><div class="qt">'+q.q+'</div></div>'
         +'<div class="arr">▼</div></div>'
         +'<div class="fca"><div class="al">Respuesta</div>'
-        +'<div class="at">'+q.a+(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'')+'</div>'
+        +'<div class="at"><div class="rs">'+cond+'</div>'+(short?'':'<div class="rf hide">'+q.a+'</div>')
+        +(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'')+'</div>'
+        +(short?'':'<button type="button" class="kwfull" aria-expanded="false" onclick="togFullR(\''+q.id+'\',this)">Ver completa</button>')
         +'<div class="vd">'
         +'<button class="bok" onclick="markR(\''+q.id+'\',\'ok\')">✓ La sabía</button>'
         +'<button class="bno" onclick="markR(\''+q.id+'\',\'no\')">✗ A repasar</button>'
@@ -39,6 +43,14 @@ function buildCards(){
   });
   updR();
   attachFlashcardSwipe();
+}
+// condensada ⇄ completa
+function togFullR(id,btn){
+  var fc=document.getElementById('fc-'+id);
+  var full=fc.querySelector('.rf').classList.toggle('hide')===false;
+  fc.querySelector('.rs').classList.toggle('hide',full);
+  btn.setAttribute('aria-expanded',full?'true':'false');
+  btn.textContent=full?'Ver resumida':'Ver completa';
 }
 function togFC(id){document.getElementById('fc-'+id).classList.toggle('open');}
 function setBadge(id,res){

@@ -141,25 +141,9 @@ function oralDiff(q){
   });
   return (oralDiffCache[q.id]=best);
 }
-// Versión condensada de la respuesta: hasta 5 puntos de lista con <strong>; sin lista, las 2 primeras oraciones
-function condenseA(html){
-  var box=document.createElement('div');
-  box.innerHTML=html;
-  var lis=[].slice.call(box.querySelectorAll('li')).filter(function(li){return li.querySelector('strong');});
-  var out;
-  if(lis.length){
-    out='<ul>'+lis.slice(0,5).map(function(li){return '<li>'+li.innerHTML+'</li>';}).join('')+'</ul>';
-  } else {
-    var t=html.replace(/<br\s*\/?>/gi,' ').replace(/<strong[^>]*>/gi,'<strong>').replace(/<(?!\/?strong>)[^>]*>/g,' ').replace(/\s+/g,' ').trim();
-    var ss=t.match(/[^.!?]+[.!?]+(\s|$)/g)||[t];
-    out='<div>'+ss.slice(0,2).join('').trim()+'</div>';
-  }
-  box.innerHTML=out; // cierra etiquetas que haya cortado el recorte
-  return box.innerHTML;
-}
 function renderOralA(){
   var q=eQ[eI];
-  var cond=condenseA(q.a);
+  var cond=condenseA(q.a,5);
   var short=kwPlain(cond).length>=kwPlain(q.a).length*0.9; // la condensada no ahorra nada: sin botón
   document.getElementById('ex-oat').innerHTML=kwHighlight(eFull||short?q.a:cond,eWritten.kws)
     +(q.tip?'<div class="tip"><strong>💡 Tip:</strong> '+q.tip+'</div>':'');

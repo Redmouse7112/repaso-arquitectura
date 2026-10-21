@@ -189,3 +189,20 @@ function kwHighlight(html,kws){
   });
   return box.innerHTML;
 }
+
+// Versión condensada de una respuesta: hasta `max` puntos de lista con <strong>; sin lista, las 2 primeras oraciones
+function condenseA(html,max){
+  var box=document.createElement('div');
+  box.innerHTML=html;
+  var lis=[].slice.call(box.querySelectorAll('li')).filter(function(li){return li.querySelector('strong');});
+  var out;
+  if(lis.length){
+    out='<ul>'+lis.slice(0,max).map(function(li){return '<li>'+li.innerHTML+'</li>';}).join('')+'</ul>';
+  } else {
+    var t=html.replace(/<br\s*\/?>/gi,' ').replace(/<strong[^>]*>/gi,'<strong>').replace(/<(?!\/?strong>)[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+    var ss=t.match(/[^.!?]+[.!?]+(\s|$)/g)||[t];
+    out='<div>'+ss.slice(0,2).join('').trim()+'</div>';
+  }
+  box.innerHTML=out; // cierra etiquetas que haya cortado el recorte
+  return box.innerHTML;
+}
