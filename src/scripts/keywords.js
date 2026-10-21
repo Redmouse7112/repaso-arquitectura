@@ -19,13 +19,37 @@ var KW_SYN=[
   [/^(sin|no)$/,'sin']
 ];
 
+// equivalencias entre frases (se aplican a la frase del concepto y al texto del usuario)
+var KW_PHRASE=[
+  ['paginas? web','www'], ['world wide web','www'],
+  ['departamento de defensa','darpa'],
+  ['sistema de nombres( de dominio)?','dns'],
+  ['era movil','eramovil'], ['smartphones?|celulares?|telefonos? (moviles|celulares)','eramovil']
+].map(function(p){return [new RegExp(' ('+p[0]+')(?= )','g'),' '+p[1]];});
+// nombres propios: si un concepto contiene uno, alcanza con que el usuario nombre a esa persona/entidad
+// (si el concepto nombra a dos, con una basta).
+// all: palabras del concepto que la identifican; user: palabras que, solas, la nombran (incluye variantes mal escritas)
+var KW_NAMES={
+  cerf:{all:['vint','cerf'],user:['cerf','vint']},
+  berners:{all:['tim','berners','lee'],user:['berners']},
+  kahn:{all:['bob','kahn','hakn'],user:['kahn','hakn']},
+  darpa:{all:['darpa'],user:['darpa']},
+  cern:{all:['cern'],user:['cern']},
+  intel:{all:['intel'],user:['intel']},
+  ibm:{all:['ibm'],user:['ibm']}
+};
+
 // minúsculas y sin acentos, conservando la longitud (para poder mapear posiciones al texto original)
 function kwNorm(s){
   var o='';
   for(var i=0;i<s.length;i++)o+=s.charAt(i).normalize('NFD').charAt(0);
   return o.toLowerCase();
 }
-function kwWords(s){return kwNorm(s).split(/[^a-z0-9]+/).filter(Boolean);}
+function kwWords(s){
+  var t=' '+kwNorm(s).replace(/[^a-z0-9]+/g,' ').trim()+' ';
+  KW_PHRASE.forEach(function(p){t=t.replace(p[0],p[1]);});
+  return t.split(' ').filter(Boolean);
+}
 function kwPlain(html){return html.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();}
 function kwEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 // tokens de una frase: sin conectores ni dígitos sueltos
@@ -46,7 +70,16 @@ function kwSame(c,u){
   return u.indexOf(c)===0||(c.indexOf(u)===0&&c.length-u.length<=3);
 }
 
-// → [{label, alts:[[tokens]], needles:[{s}]}]
+// personas/entidades (KW_NAMES) que nombra un concepto
+function kwNames(alts){
+  var out=[];
+  Object.keys(KW_NAMES).forEach(function(g){
+    var hit=alts.some(function(toks){return toks.some(function(t){return KW_NAMES[g].all.indexOf(t)>=0;});});
+    if(hit)out.push(g);
+  });
+  return out;
+}
+// → [{label, alts:[[tokens]], needles:[{s}], names:[grupos]}]
 function extractKW(q){
   var out=[],keys={};
   function push(c){
@@ -73,7 +106,7 @@ function extractKW(q){
       x=x.trim();
       if(x.length>=2)needles.push({s:kwNorm(x).replace(/\s+/g,' ')});
     });
-    push({label:t,alts:alts,needles:needles});
+    push({label:t,alts:alts,needles:needles,names:kwNames(alts)});
   }
   // respaldo (si la respuesta tiene menos de KW_MIN frases): siglas y cifras
   if(out.length<KW_MIN){
@@ -103,7 +136,10 @@ function kwWindow(toks,uc){
 function checkWritten(q,userText){
   var uc=kwWords(userText).map(kwCanon),found=0;
   var kws=extractKW(q).map(function(c){
-    var f=c.alts.some(function(toks){return kwWindow(toks,uc);});
+    var f=c.alts.some(function(toks){return kwWindow(toks,uc);})
+      ||(c.names&&c.names.some(function(g){
+        return KW_NAMES[g].user.some(function(u){return uc.indexOf(kwCanon(u))>=0;});
+      }));
     if(f)found++;
     return {label:c.label,found:f,needles:c.needles};
   });
