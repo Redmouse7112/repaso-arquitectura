@@ -33,6 +33,23 @@ JS_FILES = [
     SRC / "scripts" / "app.js",
 ]
 
+# Comentario en texto plano al inicio del <script> (queda visible aunque el resto este ofuscado)
+BANNER = """/*
+      ╱▓╲          
+     ╱░░░╲         
+    │ ◉  ◉│        
+    │  ▽  │        
+    ╲_____╱        
+    ┌─┤ ├─┐        
+    │ │ │ ├────►   
+    └─┤ ├─┘        
+      │ │          
+     ═╧═╧═         
+
+  © 2026 Javier "RED" Barrionuevo
+  Ve a robar a otro lado.
+*/"""
+
 ICONS = ["icon-192.png", "icon-512.png", "icon-512-maskable.png", "apple-touch-icon.png"]
 
 
@@ -82,6 +99,7 @@ def build_html():
     js = "\n".join(read(f) for f in JS_FILES)
     if "--no-obfuscate" not in sys.argv and os.environ.get("OBFUSCATE") != "0":
         js = obfuscate(js)
+    js = BANNER + "\n" + js
     html = re.sub(
         r'(\s*<script src="[^"]+"></script>)+\s*(?=</body>)',
         lambda m: "\n<script>\n" + js + "\n</script>\n",
