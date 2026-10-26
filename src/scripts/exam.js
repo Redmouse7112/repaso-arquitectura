@@ -299,6 +299,7 @@ function togTeoria(i,btn){
     // scroll manual tras renderizar el panel; el offset evita que lo tape el nav fijo
     setTimeout(function(){
       var el=document.getElementById('rt-'+i);
+      if(!el)return; // la revisión ya no está (se reinició el examen)
       var nav=document.querySelector('.nav');
       var top=el.getBoundingClientRect().top+window.scrollY-Math.max(80,(nav?nav.offsetHeight:0)+12);
       window.scrollTo({top:top,behavior:'smooth'});

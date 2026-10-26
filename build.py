@@ -5,8 +5,11 @@ embebidos (base64), listo para abrir offline en un celular o servir como PWA
 junto a manifest.json / sw.js / iconos (tambien copiados a dist/).
 """
 import base64
+import os
 import re
 import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -37,6 +40,31 @@ def read(path):
     return path.read_text(encoding="utf-8")
 
 
+def obfuscate(js):
+    """Ofusca el bundle JS con javascript-obfuscator (tools/obfuscate.js).
+
+    Instala la dependencia con npm si falta. Con --no-obfuscate (o OBFUSCATE=0)
+    se omite, util para depurar el codigo legible.
+    """
+    node = shutil.which("node")
+    npm = shutil.which("npm")
+    if not node or not npm:
+        sys.exit("ERROR: se necesita Node.js y npm para ofuscar (o usa --no-obfuscate).")
+    if not (ROOT / "node_modules" / "javascript-obfuscator").exists():
+        print("Instalando javascript-obfuscator (npm ci)...")
+        subprocess.run([npm, "ci"], cwd=ROOT, check=True)
+    res = subprocess.run(
+        [node, str(ROOT / "tools" / "obfuscate.js")],
+        cwd=ROOT, input=js.encode("utf-8"), capture_output=True, check=False,
+    )
+    if res.returncode != 0:
+        sys.exit("ERROR al ofuscar:\n" + res.stderr.decode("utf-8", "replace"))
+    out = res.stdout.decode("utf-8")
+    if "</script" in out.lower():
+        sys.exit("ERROR: el JS ofuscado contiene </script>; no se puede embeber.")
+    return out
+
+
 def build_html():
     html = read(SRC / "index.html")
 
@@ -52,6 +80,8 @@ def build_html():
 
     # 2) JS inline (concatena todos los modulos en orden de dependencia)
     js = "\n".join(read(f) for f in JS_FILES)
+    if "--no-obfuscate" not in sys.argv and os.environ.get("OBFUSCATE") != "0":
+        js = obfuscate(js)
     html = re.sub(
         r'(\s*<script src="[^"]+"></script>)+\s*(?=</body>)',
         lambda m: "\n<script>\n" + js + "\n</script>\n",

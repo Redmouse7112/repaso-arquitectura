@@ -1,0 +1,8 @@
+{
+  "name": "repaso-arquitectura",
+  "private": true,
+  "description": "Herramientas de build (solo ofuscacion del bundle JS; ver build.py)",
+  "devDependencies": {
+    "javascript-obfuscator": "5.9.0"
+  }
+}

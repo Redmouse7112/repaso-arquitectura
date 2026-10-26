@@ -22,7 +22,11 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generar dist/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generar dist/ (build.py instala javascript-obfuscator con npm ci y ofusca el JS)
         run: python build.py
 
       - name: Publicar dist/ en la rama gh-pages
